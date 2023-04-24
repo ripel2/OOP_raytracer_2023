@@ -1,0 +1,8 @@
+raytracer
+
+*.a
+*.o
+*.so
+
+build/
+
