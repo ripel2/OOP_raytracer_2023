@@ -7,8 +7,8 @@
 
 #include "AObject.hpp"
 
-RayTracer::AObject::AObject(const Math::Point<3> &position, const std::shared_ptr<RayTracer::IMaterial> &material)
-    : _position(position), _material(material)
+RayTracer::AObject::AObject()
+    : _position(), _material(nullptr)
 {
 }
 

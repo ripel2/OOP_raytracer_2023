@@ -26,12 +26,12 @@ namespace RayTracer {
              * @param ray The ray to check
              * @return A unique pointer to a RayHit object if the ray hits the object, nullptr otherwise
             */
-            virtual bool hits(const RayTracer::Ray &ray, std::unique_ptr<RayTracer::RayHit> &hit) const = 0;
+            virtual bool hits(const Ray &ray, std::unique_ptr<RayHit> &hit) const = 0;
 
             /**
              * @brief Get the material of the object
              * @return A const reference to the material
             */
-            virtual const std::shared_ptr<RayTracer::IMaterial> &getMaterial() const noexcept = 0;
+            virtual const std::shared_ptr<IMaterial> &getMaterial() const noexcept = 0;
     };
 }

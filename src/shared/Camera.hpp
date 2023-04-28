@@ -32,7 +32,7 @@ namespace RayTracer {
              * @param v The vertical position of the point
              * @return The ray for the given point
             */
-            RayTracer::Ray getRay(double u, double v) const;
+            Ray getRay(double u, double v) const;
 
         private:
             Math::Point<3> _origin;
