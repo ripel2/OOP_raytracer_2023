@@ -12,11 +12,14 @@
 namespace RayTracer {
     class Sphere : public AObject {
         public:
-            Sphere(const Math::Point<3> &center, std::shared_ptr<IMaterial> &material, double radius);
+            Sphere();
 
             bool hits(const RayTracer::Ray &ray, std::unique_ptr<RayTracer::RayHit> &hit) const;
+
+            virtual double getRadius() const noexcept;
+
+            void setRadius(double radius) noexcept;
         private:
-            Math::Point<3> _center;
             double _radius;
     };
 }

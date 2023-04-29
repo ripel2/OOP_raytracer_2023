@@ -7,24 +7,40 @@
 
 #include "DirectionalLight.hpp"
 
-RayTracer::DirectionalLight::DirectionalLight(const Math::Vector<3> &direction, double intensity)
-    : _direction(direction), _color(Math::Vector<3>()), _intensity(intensity)
+RayTracer::DirectionalLight::DirectionalLight()
+    : ALight(), _direction(Math::Vector<3>()), _color(RayTracer::Color(1, 1, 1))
 {
-}
-
-RayTracer::DirectionalLight::DirectionalLight(const Math::Vector<3> &direction, const RayTracer::Color &color, double intensity)
-    : _direction(direction), _color(color), _intensity(intensity)
-{
+    setIntensity(1.0);
 }
 
 RayTracer::Color RayTracer::DirectionalLight::applyLight(const RayTracer::Color &pixel, const Ray &ray, const RayHit &hit) const
 {
-    Math::Vector<3> lightResult = Math::Vector<3>();
     Math::Vector<3> lightDir = _direction * -1;
+    double dot = hit.normal.dot(lightDir);
 
     (void)ray;
-    if (hit.normal.dot(lightDir) > 0) {
-        lightResult = (pixel * _color) * _intensity * hit.normal.dot(lightDir);
+    if (dot > 0) {
+        return (pixel * _color) * getIntensity() * dot;
     }
-    return lightResult;
+    return Math::Vector<3>();
+}
+
+Math::Vector<3> RayTracer::DirectionalLight::getDirection() const noexcept
+{
+    return _direction;
+}
+
+void RayTracer::DirectionalLight::setDirection(const Math::Vector<3> &direction) noexcept
+{
+    _direction = direction;
+}
+
+RayTracer::Color RayTracer::DirectionalLight::getColor() const noexcept
+{
+    return _color;
+}
+
+void RayTracer::DirectionalLight::setColor(const RayTracer::Color &color) noexcept
+{
+    _color = color;
 }

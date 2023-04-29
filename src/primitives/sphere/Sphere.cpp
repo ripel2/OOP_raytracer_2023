@@ -7,13 +7,14 @@
 
 #include "Sphere.hpp"
 
-RayTracer::Sphere::Sphere(const Math::Point<3> &center, std::shared_ptr<RayTracer::IMaterial> &material, double radius)
-    : AObject(center, material), _center(center), _radius(radius)
+RayTracer::Sphere::Sphere()
+    : AObject()
 {
 }
 
 bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, std::unique_ptr<RayHit> &hit) const
 {
+    Math::Point<3> _center = getPosition();
     Math::Vector<3> oc = ray.getOrigin() - _center;
     auto a = ray.getDirection().lengthSquared();
     auto b = oc.dot(ray.getDirection());
@@ -42,3 +43,12 @@ bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, std::unique_ptr<RayHit> 
     return true;
 }
 
+double RayTracer::Sphere::getRadius() const noexcept
+{
+    return _radius;
+}
+
+void RayTracer::Sphere::setRadius(double radius) noexcept
+{
+    _radius = radius;
+}
