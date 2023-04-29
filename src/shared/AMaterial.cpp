@@ -25,7 +25,7 @@ double RayTracer::AMaterial::getAlbedo() const noexcept
     return 0;
 }
 
-void RayTracer::AMaterial::setAlbedo(double albedo) noexcept
+void RayTracer::AMaterial::setAlbedo(double albedo)
 {
     std::cerr << "Warning : Called AMaterial::setAlbedo() function from abstract" << std::endl;
     (void)albedo;
@@ -37,7 +37,7 @@ double RayTracer::AMaterial::getFuzziness() const noexcept
     return 0;
 }
 
-void RayTracer::AMaterial::setFuzziness(double fuzziness) noexcept
+void RayTracer::AMaterial::setFuzziness(double fuzziness)
 {
     std::cerr << "Warning : Called AMaterial::setFuzziness() function from abstract" << std::endl;
     (void)fuzziness;
@@ -49,7 +49,7 @@ double RayTracer::AMaterial::getRefractionIndex() const noexcept
     return 0;
 }
 
-void RayTracer::AMaterial::setRefractionIndex(double refractionIndex) noexcept
+void RayTracer::AMaterial::setRefractionIndex(double refractionIndex)
 {
     std::cerr << "Warning : Called AMaterial::setRefractionIndex() function from abstract" << std::endl;
     (void)refractionIndex;
