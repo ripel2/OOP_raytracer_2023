@@ -31,3 +31,39 @@ void RayTracer::AObject::setMaterial(const std::shared_ptr<RayTracer::IMaterial>
 {
     _material = material;
 }
+
+double RayTracer::AObject::getRadius() const noexcept
+{
+    std::cerr << "Warning : Called AObject::getRadius() function from abstract" << std::endl;
+    return 0;
+}
+
+void RayTracer::AObject::setRadius(double radius) noexcept
+{
+    std::cerr << "Warning : Called AObject::setRadius() function from abstract" << std::endl;
+    (void)radius;
+}
+
+double RayTracer::AObject::getHeight() const noexcept
+{
+    std::cerr << "Warning : Called AObject::getHeight() function from abstract" << std::endl;
+    return 0;
+}
+
+void RayTracer::AObject::setHeight(double height) noexcept
+{
+    std::cerr << "Warning : Called AObject::setHeight() function from abstract" << std::endl;
+    (void)height;
+}
+
+double RayTracer::AObject::getInnerRadius() const noexcept
+{
+    std::cerr << "Warning : Called AObject::getInnerRadius() function from abstract" << std::endl;
+    return 0;
+}
+
+void RayTracer::AObject::setInnerRadius(double innerRadius) noexcept
+{
+    std::cerr << "Warning : Called AObject::setInnerRadius() function from abstract" << std::endl;
+    (void)innerRadius;
+}

@@ -51,40 +51,40 @@ namespace RayTracer {
              * @return The radius of the object
              * @note Used for spheres, cylinders or the outer radius of a torus
             */
-            virtual double getRadius() const noexcept = 0;
+            virtual double getRadius() const noexcept;
 
             /**
              * @brief Set the radius of the object
              * @param radius The radius to set
              * @note Used for spheres, cylinders or the outer radius of a torus
             */
-            virtual void setRadius(double radius) noexcept = 0;
+            virtual void setRadius(double radius) noexcept;
 
             /**
              * @brief Get the height of the object
              * @return The height of the object
             */
-            virtual double getHeight() const noexcept = 0;
+            virtual double getHeight() const noexcept;
 
             /**
              * @brief Set the height of the object
              * @param height The height to set
             */
-            virtual void setHeight(double height) noexcept = 0;
+            virtual void setHeight(double height) noexcept;
 
             /**
              * @brief Get the inner radius of the object
              * @return The inner radius of the object
              * @note Used for torus
             */
-            virtual double getInnerRadius() const noexcept = 0;
+            virtual double getInnerRadius() const noexcept;
 
             /**
              * @brief Set the inner radius of the object
              * @param innerRadius The inner radius to set
              * @note Used for torus
             */
-            virtual void setInnerRadius(double innerRadius) noexcept = 0;
+            virtual void setInnerRadius(double innerRadius) noexcept;
         private:
             Math::Point<3> _position;
             std::shared_ptr<IMaterial> _material;

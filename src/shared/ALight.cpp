@@ -8,7 +8,7 @@
 #include "ALight.hpp"
 
 RayTracer::ALight::ALight()
-    : _intensity(0), _color()
+    : _intensity(0)
 {
 }
 
@@ -24,12 +24,38 @@ void RayTracer::ALight::setIntensity(double intensity)
     _intensity = intensity;
 }
 
-const RayTracer::Color &RayTracer::ALight::getColor() const noexcept
+RayTracer::Color RayTracer::ALight::getColor() const noexcept
 {
-    return _color;
+    std::cerr << "Warning : Called ALight::getColor() function from abstract" << std::endl;
+    return RayTracer::Color();
 }
 
 void RayTracer::ALight::setColor(const RayTracer::Color &color) noexcept
 {
-    _color = color;
+    std::cerr << "Warning : Called ALight::setColor() function from abstract" << std::endl;
+    (void)color;
+}
+
+Math::Vector<3> RayTracer::ALight::getDirection() const noexcept
+{
+    std::cerr << "Warning : Called ALight::getDirection() function from abstract" << std::endl;
+    return Math::Vector<3>();
+}
+
+void RayTracer::ALight::setDirection(const Math::Vector<3> &direction) noexcept
+{
+    std::cerr << "Warning : Called ALight::setDirection() function from abstract" << std::endl;
+    (void)direction;
+}
+
+Math::Point<3> RayTracer::ALight::getPosition() const noexcept
+{
+    std::cerr << "Warning : Called ALight::getPosition() function from abstract" << std::endl;
+    return Math::Point<3>();
+}
+
+void RayTracer::ALight::setPosition(const Math::Point<3> &position) noexcept
+{
+    std::cerr << "Warning : Called ALight::setPosition() function from abstract" << std::endl;
+    (void)position;
 }
