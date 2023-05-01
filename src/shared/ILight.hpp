@@ -12,6 +12,9 @@
 #include "Color.hpp"
 #include "Point.hpp"
 #include "Vector.hpp"
+#include "IObject.hpp"
+
+#include <vector>
 
 namespace RayTracer {
     class ILight {
@@ -27,6 +30,7 @@ namespace RayTracer {
              * @param ray The ray that hit the pixel
              * @param hit The hit information
             */
-            virtual RayTracer::Color applyLight(const Color &pixel, const Ray &ray, const RayHit &hit) const = 0;
+            virtual RayTracer::Color applyLight(const Color &pixel, const Ray &ray,
+            const RayHit &hit, const std::vector<std::shared_ptr<RayTracer::IObject>> &objects) const = 0;
     };
 }

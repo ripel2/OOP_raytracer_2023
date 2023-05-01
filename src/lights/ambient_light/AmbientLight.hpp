@@ -17,7 +17,8 @@ namespace RayTracer {
              */
             AmbientLight();
 
-            RayTracer::Color applyLight(const RayTracer::Color &pixel, const Ray &ray, const RayHit &hit) const override;
+            RayTracer::Color applyLight(const Color &pixel, const Ray &ray,
+            const RayHit &hit, const std::vector<std::shared_ptr<RayTracer::IObject>> &objects) const override;
 
             RayTracer::Color getColor() const noexcept override;
 
