@@ -22,6 +22,30 @@ void RayTracer::AObject::setPosition(const Math::Point<3> &position) noexcept
     _position = position;
 }
 
+Math::Vector<3> RayTracer::AObject::getNormal() const noexcept
+{
+    std::cerr << "Warning : Called AObject::getNormal() function from abstract" << std::endl;
+    return Math::Vector<3>();
+}
+
+void RayTracer::AObject::setNormal(const Math::Vector<3> &normal) noexcept
+{
+    std::cerr << "Warning : Called AObject::setNormal() function from abstract" << std::endl;
+    (void)normal;
+}
+
+Math::Vector<3> RayTracer::AObject::getDistance() const noexcept
+{
+    std::cerr << "Warning : Called AObject::getDistance() function from abstract" << std::endl;
+    return Math::Vector<3>();
+}
+
+void RayTracer::AObject::setDistance(const Math::Vector<3> &distance) noexcept
+{
+    std::cerr << "Warning : Called AObject::setDistance() function from abstract" << std::endl;
+    (void)distance;
+}
+
 const std::shared_ptr<RayTracer::IMaterial> &RayTracer::AObject::getMaterial() const noexcept
 {
     return _material;

@@ -15,6 +15,7 @@
 #include "Scene.hpp"
 #include "PPMRenderer.hpp"
 #include "FlatColor.hpp"
+#include "Plane.hpp"
 
 std::shared_ptr<RayTracer::IObject> createSphere(const Math::Point<3> &center, double radius, const RayTracer::Color &color)
 {
@@ -28,6 +29,21 @@ std::shared_ptr<RayTracer::IObject> createSphere(const Math::Point<3> &center, d
     sphere->setMaterial(material);
     sphere->setRadius(radius);
     return sphere;
+}
+
+std::shared_ptr<RayTracer::IObject> createPlane(const Math::Point<3> &center, const Math::Vector<3> &normal, const Math::Vector<3> &distance, const RayTracer::Color &color)
+{
+    /* Should be created by the factory*/
+    std::shared_ptr<RayTracer::FlatColor> material = std::make_shared<RayTracer::FlatColor>();
+    std::shared_ptr<RayTracer::Plane> plane = std::make_shared<RayTracer::Plane>();
+
+    /* Should be called by the builder */
+    material->setColor(color);
+    plane->setPosition(center);
+    plane->setMaterial(material);
+    plane->setDistance(distance);
+    plane->setNormal(normal);
+    return plane;
 }
 
 std::shared_ptr<RayTracer::ILight> createAmbientLight(const RayTracer::Color &color, double intensity)
@@ -56,25 +72,27 @@ std::shared_ptr<RayTracer::ILight> createDirectionalLight(const Math::Vector<3> 
 int main(int ac, char **av)
 {
     /* Creating objects - should be done with the factory and builder */
-    std::shared_ptr<RayTracer::IObject> sphere1 = createSphere(Math::Point<3>({0, 0, 0}), 0.5, RayTracer::Color({1, 0, 0}));
-    std::shared_ptr<RayTracer::IObject> sphere2 = createSphere(Math::Point<3>({2, 0, 0}), 0.5, RayTracer::Color({0, 1, 0}));
-    std::shared_ptr<RayTracer::IObject> sphere3 = createSphere(Math::Point<3>({-2, 0, 0}), 0.5, RayTracer::Color({0, 0, 1}));
+    std::shared_ptr<RayTracer::IObject> sphere1 = createSphere(Math::Point<3>({0, 0, 0}), 1, RayTracer::Color({1, 0, 0}));
+    std::shared_ptr<RayTracer::IObject> sphere2 = createSphere(Math::Point<3>({2, 0, 0}), 1, RayTracer::Color({0, 1, 0}));
+    std::shared_ptr<RayTracer::IObject> sphere3 = createSphere(Math::Point<3>({-2, 0, 0}), 1, RayTracer::Color({0, 0, 1}));
+    std::shared_ptr<RayTracer::IObject> plane = createPlane(Math::Point<3>({0, -1, 0}), Math::Vector<3>({0, 1, 0}), Math::Vector<3>({10, 0, 10}), RayTracer::Color({0.1, 0.6, 0.85}));
 
     /* Creating lights - should be done with the factory and builder */
     std::shared_ptr<RayTracer::ILight> ambientLight = createAmbientLight(RayTracer::Color({1, 1, 1}), 0.2);
     std::shared_ptr<RayTracer::ILight> directionalLight = createDirectionalLight(Math::Vector<3>({0, 0.5, 0}), RayTracer::Color({1, 1, 1}), 0.6);
 
     /* Creating the camera */
-    Math::Point<3> cam_origin({0, 0, -2});
+    Math::Point<3> cam_origin({0, 8, 5});
     Math::Point<3> cam_lookAt({0, 0, 0});
     Math::Vector<3> cam_up({0, 1, 0});
-    std::shared_ptr<RayTracer::Camera> cam = std::make_shared<RayTracer::Camera>(cam_origin, cam_lookAt, cam_up, 50, 16.0 / 9.0);
+    std::shared_ptr<RayTracer::Camera> cam = std::make_shared<RayTracer::Camera>(cam_origin, cam_lookAt, cam_up, 90, 16.0 / 9.0);
 
     /* Creating the scene */
     RayTracer::Scene scene;
     scene.addObject(sphere1);
     scene.addObject(sphere2);
     scene.addObject(sphere3);
+    scene.addObject(plane);
     scene.addLight(ambientLight);
     scene.addLight(directionalLight);
     scene.setCamera(cam);
@@ -83,5 +101,5 @@ int main(int ac, char **av)
     RayTracer::PPMRenderer renderer("image.ppm");
 
     /* Rendering the image */
-    renderer.render(854, 480, scene);
+    renderer.render(1280, 720, scene);
 }

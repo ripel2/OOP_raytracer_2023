@@ -35,6 +35,34 @@ namespace RayTracer {
             void setPosition(const Math::Point<3> &position) noexcept;
 
             /**
+             * @brief Get the normal vector of the object
+             * @return The normal vector
+             * @note Used for planes
+            */
+            virtual Math::Vector<3> getNormal() const noexcept;
+
+            /**
+             * @brief Set the normal vector of the object
+             * @param normal The normal vector to set
+             * @note Used for planes
+            */
+            virtual void setNormal(const Math::Vector<3> &normal) noexcept;
+
+            /**
+             * @brief Get the distance of the object
+             * @return The distance of the object
+             * @note Used for planes
+            */
+            virtual Math::Vector<3> getDistance() const noexcept;
+
+            /**
+             * @brief Set the distance of the object
+             * @param distance The distance to set
+             * @note Used for planes
+            */
+            virtual void setDistance(const Math::Vector<3> &distance) noexcept;
+
+            /**
              * @brief Get the material of the object
              * @return A const reference to the material
             */
