@@ -18,9 +18,11 @@ RayTracer::Color RayTracer::ARenderer::getColor(double u, double v, const RayTra
     RayTracer::Ray ray = camera->getRay(u, v);
     std::shared_ptr<IObject> closest = nullptr;
     
+    _tmp.distance = std::numeric_limits<double>::max();
+    _rayHit.distance = std::numeric_limits<double>::max();
     for (std::shared_ptr<IObject> object : scene.getObjects()) {
         bool hits = object->hits(ray, _tmp);
-        if (hits && (!closest || _tmp.distance < _rayHit.distance)) {
+        if (hits && (closest == nullptr || _tmp.distance < _rayHit.distance)) {
             _rayHit = _tmp;
             closest = object;
         }
