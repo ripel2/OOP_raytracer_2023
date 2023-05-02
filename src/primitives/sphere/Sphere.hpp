@@ -14,7 +14,7 @@ namespace RayTracer {
         public:
             Sphere();
 
-            bool hits(const RayTracer::Ray &ray, std::unique_ptr<RayTracer::RayHit> &hit) const;
+            bool hits(const RayTracer::Ray &ray, RayHit &hit) const;
 
             virtual double getRadius() const noexcept;
 

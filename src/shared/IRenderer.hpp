@@ -1,34 +1,28 @@
 /*
 ** EPITECH PROJECT, 2023
-** bsraytracer [WSL: Ubuntu]
+** OOP_raytracer_2023
 ** File description:
 ** IRenderer
 */
 
 #pragma once
 
-#include "Color.hpp"
+#include "Scene.hpp"
 
 namespace RayTracer {
     class IRenderer {
         public:
             /**
              * @brief IRenderer destructor
-            */
+             */
             virtual ~IRenderer() = default;
 
             /**
-             * @brief Sets the size of the screen
-            */
-            virtual void setScreenSize(std::size_t width, std::size_t height) = 0;
-
-            /**
-             * @brief Displays a pixel on the screen
-             * @param x The x coordinate of the pixel
-             * @param y The y coordinate of the pixel
-             * @param color The color of the pixel
-             * @note The origin is at the top left corner of the screen
-            */
-            virtual void displayPixel(std::size_t x, std::size_t y, const Color &color) = 0;
+             * @brief Renders a scene
+             * @param width The width of the image
+             * @param height The height of the image
+             * @param scene The scene to render
+             */
+            virtual void render(std::size_t width, std::size_t height, const Scene &scene) = 0;
     };
 }

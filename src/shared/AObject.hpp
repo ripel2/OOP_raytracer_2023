@@ -20,7 +20,7 @@ namespace RayTracer {
              * @param ray The ray to check
              * @return A unique pointer to a RayHit object if the ray hits the object, nullptr otherwise
             */
-            virtual bool hits(const Ray &ray, std::unique_ptr<RayHit> &hit) const = 0;
+            virtual bool hits(const Ray &ray, RayHit &hit) const = 0;
 
             /**
              * @brief Get the position of the object
