@@ -19,7 +19,7 @@ namespace RayTracer {
             /**
              * @brief ARenderer constructor
              */
-            ARenderer();
+            ARenderer() = default;
             /**
              * @brief ARenderer destructor
              */
@@ -42,8 +42,5 @@ namespace RayTracer {
              * @return The color of the pixel
              */
             [[nodiscard]] Color getColor(double u, double v, const Scene &scene);
-        private:
-            RayHit _rayHit;
-            RayHit _tmp;
     };
 }
