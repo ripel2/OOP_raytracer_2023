@@ -8,6 +8,7 @@
 #pragma once
 
 #include "IObject.hpp"
+#include "Matrix.hpp"
 
 namespace RayTracer {
     class AObject : public IObject {
@@ -33,6 +34,42 @@ namespace RayTracer {
              * @param position The position to set
             */
             void setPosition(const Math::Point<3> &position) noexcept;
+
+            /**
+             * @brief Get the translation matrix of the object
+             * @return A const reference to the translation
+            */
+            const Math::Matrix &getTranslation() const noexcept;
+
+            /**
+             * @brief Set the translation of the object
+             * @param translation The translation to set
+            */
+            void setTranslation(const Math::Vector<3> &translation) noexcept;
+
+            /**
+             * @brief Get the rotation matrix of the object
+             * @return A const reference to the rotation
+            */
+            const Math::Matrix &getRotation() const noexcept;
+
+            /**
+             * @brief Set the rotation of the object
+             * @param rotation The rotation to set
+            */
+            void setRotation(const Math::Vector<3> &rotation) noexcept;
+
+            /**
+             * @brief Get the scale matrix of the object
+             * @return A const reference to the scale
+            */
+            const Math::Matrix &getScale() const noexcept;
+
+            /**
+             * @brief Set the scale of the object
+             * @param scale The scale to set
+            */
+            void setScale(const Math::Vector<3> &scale) noexcept;
 
             /**
              * @brief Get the normal vector of the object
@@ -113,8 +150,18 @@ namespace RayTracer {
              * @note Used for torus
             */
             virtual void setInnerRadius(double innerRadius) noexcept;
+        protected:
+            /**
+             * @brief Get the transformation matrix of the object
+             * @return The transformation matrix
+             * @note The transformation matrix is the result of the multiplication of the translation, rotation and scale matrices
+            */
+            Math::Matrix getTransformation() const noexcept;
         private:
             Math::Point<3> _position;
             std::shared_ptr<IMaterial> _material;
+            Math::Matrix _translation;
+            Math::Matrix _rotation;
+            Math::Matrix _scale;
     };
 }

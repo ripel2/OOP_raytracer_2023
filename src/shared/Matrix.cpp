@@ -8,12 +8,15 @@
 #include "Matrix.hpp"
 
 Math::Matrix::Matrix(std::size_t rows_, std::size_t cols_)
-    : rows(rows_), cols(cols_), _matrix(rows_, std::vector<double>(cols_))
+    : rows(rows_), cols(cols_), _matrix()
 {
+    if (rows > 4 || cols > 4) {
+        throw std::invalid_argument("Matrix must be at most 4x4.");
+    }
 }
 
 Math::Matrix::Matrix(std::initializer_list<std::initializer_list<double>> list)
-    : rows(list.size()), cols(list.begin()->size()), _matrix(rows, std::vector<double>(cols))
+    : rows(list.size()), cols(list.begin()->size()), _matrix()
 {
     std::size_t i = 0;
     for (auto row : list) {
@@ -106,7 +109,7 @@ Math::Matrix &Math::Matrix::operator+=(const Math::Matrix &other)
     return *this;
 }
 
-Math::Matrix Math::Matrix::operator-(const Math::Matrix &other)
+Math::Matrix Math::Matrix::operator-(const Math::Matrix &other) const
 {
     if (this->rows != other.rows || this->cols != other.cols) {
         throw std::invalid_argument("Matrix operator- : Matrices must have the same dimensions.");
@@ -133,7 +136,7 @@ Math::Matrix &Math::Matrix::operator-=(const Math::Matrix &other)
     return *this;
 }
 
-Math::Matrix Math::Matrix::operator*(const Math::Matrix &other)
+Math::Matrix Math::Matrix::operator*(const Math::Matrix &other) const
 {
     if (this->cols != other.rows) {
         throw std::invalid_argument("Matrix operator* : Matrices must have the same dimensions.");
@@ -167,7 +170,7 @@ Math::Matrix &Math::Matrix::operator*=(const Math::Matrix &other)
     return *this;
 }
 
-Math::Matrix Math::Matrix::operator*(double scalar)
+Math::Matrix Math::Matrix::operator*(double scalar) const
 {
     Math::Matrix result(this->rows, this->cols);
     for (std::size_t i = 0; i < this->rows; i++) {
@@ -188,7 +191,7 @@ Math::Matrix &Math::Matrix::operator*=(double scalar)
     return *this;
 }
 
-Math::Matrix Math::Matrix::operator/(double scalar)
+Math::Matrix Math::Matrix::operator/(double scalar) const
 {
     if (scalar == 0) {
         throw std::invalid_argument("Matrix operator/ : Scalar must not be 0.");
@@ -217,9 +220,7 @@ Math::Matrix &Math::Matrix::operator=(const Math::Matrix &other)
     if (this != &other) {
         this->rows = other.rows;
         this->cols = other.cols;
-        this->_matrix.resize(rows);
         for (std::size_t i = 0; i < rows; i++) {
-            this->_matrix[i].resize(cols);
             for (std::size_t j = 0; j < cols; j++) {
                 this->_matrix[i][j] = other._matrix[i][j];
             }
@@ -363,4 +364,64 @@ std::ostream &operator<<(std::ostream &os, const Math::Matrix &matrix)
         os << std::endl;
     }
     return os;
+}
+
+Math::Vector<3> Math::Matrix::operator*(const Math::Vector<3> &vector) const
+{
+    if (cols < 3) {
+        throw std::invalid_argument("Matrix * Vector<3> : Matrix must have at least 3 columns.");
+    }
+    Math::Vector<3> result;
+    for (std::size_t i = 0; i < rows; i++) {
+        result[i] = 0;
+        for (std::size_t j = 0; j < cols; j++) {
+            result[i] += _matrix[i][j] * vector[j];
+        }
+    }
+    return result;
+}
+
+Math::Point<3> Math::Matrix::operator*(const Math::Point<3> &point) const
+{
+    if (cols < 3) {
+        throw std::invalid_argument("Matrix * Point<3> : Matrix must have at least 3 columns.");
+    }
+    Math::Point<3> result;
+    for (std::size_t i = 0; i < rows; i++) {
+        result[i] = 0;
+        for (std::size_t j = 0; j < cols; j++) {
+            result[i] += _matrix[i][j] * point[j];
+        }
+    }
+    return result;
+}
+
+Math::Vector<4> Math::Matrix::operator*(const Math::Vector<4> &vector) const
+{
+    if (cols < 4) {
+        throw std::invalid_argument("Matrix * Vector<4> : Matrix must have at least 4 columns.");
+    }
+    Math::Vector<4> result;
+    for (std::size_t i = 0; i < rows; i++) {
+        result[i] = 0;
+        for (std::size_t j = 0; j < cols; j++) {
+            result[i] += _matrix[i][j] * vector[j];
+        }
+    }
+    return result;
+}
+
+Math::Point<4> Math::Matrix::operator*(const Math::Point<4> &point) const
+{
+    if (cols < 4) {
+        throw std::invalid_argument("Matrix * Point<4> : Matrix must have at least 4 columns.");
+    }
+    Math::Point<4> result;
+    for (std::size_t i = 0; i < rows; i++) {
+        result[i] = 0;
+        for (std::size_t j = 0; j < cols; j++) {
+            result[i] += _matrix[i][j] * point[j];
+        }
+    }
+    return result;
 }
