@@ -13,12 +13,14 @@ RayTracer::DirectionalLight::DirectionalLight()
     setIntensity(1.0);
 }
 
-RayTracer::Color RayTracer::DirectionalLight::applyLight(const RayTracer::Color &pixel, const Ray &ray, const RayHit &hit) const
+RayTracer::Color RayTracer::DirectionalLight::applyLight(const RayTracer::Color &pixel, const Ray &ray,
+const RayHit &hit, const std::vector<std::shared_ptr<RayTracer::IObject>> &objects) const
 {
-    Math::Vector<3> lightDir = _direction * -1;
+    Math::Vector<3> lightDir = _direction;
     double dot = hit.normal.dot(lightDir);
 
     (void)ray;
+    (void)objects;
     if (dot > 0) {
         return (pixel * _color) * getIntensity() * dot;
     }

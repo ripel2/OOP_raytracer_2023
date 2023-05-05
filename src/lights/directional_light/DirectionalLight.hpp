@@ -17,7 +17,8 @@ namespace RayTracer {
             */
             DirectionalLight();
 
-            RayTracer::Color applyLight(const RayTracer::Color &pixel, const Ray &ray, const RayHit &hit) const override;
+            RayTracer::Color applyLight(const Color &pixel, const Ray &ray,
+            const RayHit &hit, const std::vector<std::shared_ptr<RayTracer::IObject>> &objects) const override;
 
             Math::Vector<3> getDirection() const noexcept;
 

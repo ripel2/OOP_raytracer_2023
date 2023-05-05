@@ -12,7 +12,7 @@ RayTracer::Sphere::Sphere()
 {
 }
 
-bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, std::unique_ptr<RayHit> &hit) const
+bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, RayHit &hit) const
 {
     Math::Point<3> _center = getPosition();
     Math::Vector<3> oc = ray.getOrigin() - _center;
@@ -24,20 +24,20 @@ bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, std::unique_ptr<RayHit> 
     if (discriminant < 0)
         return false;
     if (discriminant == 0) {
-        hit->distance = -b / a;
-        hit->point = ray.getPoint(hit->distance);
-        hit->normal = Math::Vector<3>(hit->point - _center) / _radius;
+        hit.distance = -b / a;
+        hit.point = ray.getPoint(hit.distance);
+        hit.normal = Math::Vector<3>(hit.point - _center) / _radius;
     } else {
         auto temp = (-b - sqrt(discriminant)) / a;
         if (temp > 0) {
-            hit->distance = temp;
-            hit->point = ray.getPoint(hit->distance);
-            hit->normal = Math::Vector<3>(hit->point - _center) / _radius;
+            hit.distance = temp;
+            hit.point = ray.getPoint(hit.distance);
+            hit.normal = Math::Vector<3>(hit.point - _center) / _radius;
         } else {
             temp = (-b + sqrt(discriminant)) / a;
-            hit->distance = temp;
-            hit->point = ray.getPoint(hit->distance);
-            hit->normal = Math::Vector<3>(hit->point - _center) / _radius;
+            hit.distance = temp;
+            hit.point = ray.getPoint(hit.distance);
+            hit.normal = Math::Vector<3>(hit.point - _center) / _radius;
         }
     }
     return true;

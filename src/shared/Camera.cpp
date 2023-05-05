@@ -11,15 +11,22 @@ RayTracer::Camera::Camera(const Math::Point<3> &origin, const Math::Point<3> &lo
     const Math::Vector<3> &up, double vfov, double aspectRatio)
     : _origin(origin)
 {
-    double theta = vfov * M_PI / 180;
-    double halfHeight = tan(theta / 2);
-    double halfWidth = aspectRatio * halfHeight;
+    auto theta = vfov * M_PI / 180;
+    auto h = tan(theta / 2);
+    auto viewportHeight = 2.0 * h;
+    auto viewportWidth = aspectRatio * viewportHeight;
+
     _w = Math::Vector<3>(origin - lookAt).getNormalized();
-    _u = up.cross(_w).getNormalized();
+    if (std::abs(up.dot(_w)) == 1.0) {
+        _u = Math::Vector<3>({1, 0, 0});
+    } else {
+        _u = up.cross(_w).getNormalized();
+    }
     _v = _w.cross(_u);
-    _lowerLeftCorner = _origin - _u * halfWidth - _v * halfHeight - _w;
-    _horizontal = _u * 2 * halfWidth;
-    _vertical = _v * 2 * halfHeight;
+
+    _horizontal = _u * viewportWidth;
+    _vertical = _v * viewportHeight;
+    _lowerLeftCorner = _origin - _horizontal / 2 - _vertical / 2 - _w;
 }
 
 RayTracer::Ray RayTracer::Camera::getRay(double u, double v) const

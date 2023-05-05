@@ -27,7 +27,8 @@ namespace RayTracer {
              * @param ray The ray that hit the pixel
              * @param hit The hit information
             */
-            virtual Color applyLight(const Color &pixel, const Ray &ray, const RayHit &hit) const = 0;
+            virtual Color applyLight(const Color &pixel, const Ray &ray,
+            const RayHit &hit, const std::vector<std::shared_ptr<RayTracer::IObject>> &objects) const = 0;
 
             /**
              * @brief Get the intensity of the light

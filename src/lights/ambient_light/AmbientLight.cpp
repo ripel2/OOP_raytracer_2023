@@ -13,10 +13,12 @@ RayTracer::AmbientLight::AmbientLight()
     setIntensity(1.0);
 }
 
-RayTracer::Color RayTracer::AmbientLight::applyLight(const RayTracer::Color &pixel, const Ray &ray, const RayHit &hit) const
+RayTracer::Color RayTracer::AmbientLight::applyLight(const RayTracer::Color &pixel, const Ray &ray,
+const RayHit &hit, const std::vector<std::shared_ptr<RayTracer::IObject>> &objects) const
 {
     (void)ray;
     (void)hit;
+    (void)objects;
     return (pixel * _color) * getIntensity();
 }
 
