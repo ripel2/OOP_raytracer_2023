@@ -8,7 +8,7 @@
 #include "Sphere.hpp"
 
 RayTracer::Sphere::Sphere()
-    : AObject()
+    : _radius(1)
 {
 }
 

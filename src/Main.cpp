@@ -5,101 +5,64 @@
 ** Main
 */
 
-#include "Camera.hpp"
-#include "Color.hpp"
-#include "Ray.hpp"
-#include "RayHit.hpp"
-#include "Sphere.hpp"
-#include "AmbientLight.hpp"
-#include "DirectionalLight.hpp"
-#include "Scene.hpp"
-#include "PPMRenderer.hpp"
-#include "FlatColor.hpp"
-#include "Plane.hpp"
+#include "PluginLoader.hpp"
 
-std::shared_ptr<RayTracer::IObject> createSphere(const Math::Point<3> &center, double radius, const RayTracer::Color &color)
+#include "Parser.hpp"
+
+static void print_help()
 {
-    /* Should be created by the factory*/
-    std::shared_ptr<RayTracer::FlatColor> material = std::make_shared<RayTracer::FlatColor>();
-    std::shared_ptr<RayTracer::Sphere> sphere = std::make_shared<RayTracer::Sphere>();
-
-    /* Should be called by the builder */
-    material->setColor(color);
-    sphere->setPosition(center);
-    sphere->setMaterial(material);
-    sphere->setRadius(radius);
-    return sphere;
+    std::cout << "USAGE: ./raytracer <SCENE_FILE>" << std::endl;
+    std::cout << "\tSCENE_FILE: scene configuration" << std::endl;
 }
 
-std::shared_ptr<RayTracer::IObject> createPlane(const Math::Point<3> &center, const Math::Vector<3> &normal, const Math::Vector<3> &distance, const RayTracer::Color &color)
+static int start_raytracer(char **av)
 {
-    /* Should be created by the factory*/
-    std::shared_ptr<RayTracer::FlatColor> material = std::make_shared<RayTracer::FlatColor>();
-    std::shared_ptr<RayTracer::Plane> plane = std::make_shared<RayTracer::Plane>();
+    RayTracer::PluginLoader loader;
+    RayTracer::Parser parser(&loader);
 
-    /* Should be called by the builder */
-    material->setColor(color);
-    plane->setPosition(center);
-    plane->setMaterial(material);
-    plane->setDistance(distance);
-    plane->setNormal(normal);
-    return plane;
-}
+    try {
+        loader.LoadPlugins("./plugins");
+    } catch (const RayTracer::PluginLoaderError &e) {
+        std::cerr << av[0] << ": " << "plugin loader error: " << e.what() << std::endl;
+        return 84;
+    } catch (const RayTracer::FactoryError &e) {
+        std::cerr << av[0] << ": " << "factory error: " << e.what() << std::endl;
+        return 84;
+    } catch (const std::exception &e) {
+        std::cerr << av[0] << ": " << "unknown error: " << e.what() << std::endl;
+        return 84;
+    }
 
-std::shared_ptr<RayTracer::ILight> createAmbientLight(const RayTracer::Color &color, double intensity)
-{
-    /* Should be created by the factory*/
-    std::shared_ptr<RayTracer::AmbientLight> light = std::make_shared<RayTracer::AmbientLight>();
+    try {
+        parser.parse(av[1]);
+    } catch (const RayTracer::ParserError &e) {
+        std::cerr << av[0] << ": " << "parser error: " << e.what() << std::endl;
+        return 84;
+    } catch (const RayTracer::BuilderError &e) {
+        std::cerr << av[0] << ": " << "builder error: " << e.what() << std::endl;
+        return 84;
+    } catch (const std::exception &e) {
+        std::cerr << av[0] << ": " << "unknown error: " << e.what() << std::endl;
+        return 84;
+    }
 
-    /* Should be called by the builder */
-    light->setColor(color);
-    light->setIntensity(intensity);
-    return light;
-}
+    std::unique_ptr<RayTracer::Scene> scene = std::move(parser.getScene());
+    std::unique_ptr<RayTracer::IRenderer> renderer = std::move(parser.getRenderer());
 
-std::shared_ptr<RayTracer::ILight> createDirectionalLight(const Math::Vector<3> &direction, const RayTracer::Color &color, double intensity)
-{
-    /* Should be created by the factory*/
-    std::shared_ptr<RayTracer::DirectionalLight> light = std::make_shared<RayTracer::DirectionalLight>();
-
-    /* Should be called by the builder */
-    light->setColor(color);
-    light->setIntensity(intensity);
-    light->setDirection(direction);
-    return light;
+    try {
+        renderer->render(parser.getImageWidth(), parser.getImageHeight(), *scene);
+    } catch (const std::exception &e) {
+        std::cerr << av[0] << ": " << "unknown error: " << e.what() << std::endl;
+        return 84;
+    }
+    return 0;
 }
 
 int main(int ac, char **av)
 {
-    /* Creating objects - should be done with the factory and builder */
-    std::shared_ptr<RayTracer::IObject> sphere1 = createSphere(Math::Point<3>({0, 0, 0}), 1, RayTracer::Color({1, 0, 0}));
-    std::shared_ptr<RayTracer::IObject> sphere2 = createSphere(Math::Point<3>({2, 0, 0}), 1, RayTracer::Color({0, 1, 0}));
-    std::shared_ptr<RayTracer::IObject> sphere3 = createSphere(Math::Point<3>({-2, 0, 0}), 1, RayTracer::Color({0, 0, 1}));
-    std::shared_ptr<RayTracer::IObject> plane = createPlane(Math::Point<3>({0, -1, 0}), Math::Vector<3>({0, 1, 0}), Math::Vector<3>({10, 0, 10}), RayTracer::Color({0.1, 0.6, 0.85}));
-
-    /* Creating lights - should be done with the factory and builder */
-    std::shared_ptr<RayTracer::ILight> ambientLight = createAmbientLight(RayTracer::Color({1, 1, 1}), 0.2);
-    std::shared_ptr<RayTracer::ILight> directionalLight = createDirectionalLight(Math::Vector<3>({0, 0.5, 0}), RayTracer::Color({1, 1, 1}), 0.6);
-
-    /* Creating the camera */
-    Math::Point<3> cam_origin({0, 8, 5});
-    Math::Point<3> cam_lookAt({0, 0, 0});
-    Math::Vector<3> cam_up({0, 1, 0});
-    std::shared_ptr<RayTracer::Camera> cam = std::make_shared<RayTracer::Camera>(cam_origin, cam_lookAt, cam_up, 90, 16.0 / 9.0);
-
-    /* Creating the scene */
-    RayTracer::Scene scene;
-    scene.addObject(sphere1);
-    scene.addObject(sphere2);
-    scene.addObject(sphere3);
-    scene.addObject(plane);
-    scene.addLight(ambientLight);
-    scene.addLight(directionalLight);
-    scene.setCamera(cam);
-
-    /* Creating the renderer */
-    RayTracer::PPMRenderer renderer("image.ppm");
-
-    /* Rendering the image */
-    renderer.render(1280, 720, scene);
+    if (ac != 2) {
+        print_help();
+        return 84;
+    }
+    return start_raytracer(av);
 }

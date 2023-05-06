@@ -8,7 +8,7 @@
 #include "Plane.hpp"
 
 RayTracer::Plane::Plane()
-    : _distance(), _normal(Math::Vector<3>())
+    : _distance({1000000.0, 1000000.0, 1000000.0}), _normal(Math::Vector<3>({0, 1, 0}))
 {
 }
 
