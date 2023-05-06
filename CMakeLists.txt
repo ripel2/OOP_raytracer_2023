@@ -6,7 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-gnu-unique")
 
-add_executable(raytracer src/Main.cpp)
+file(GLOB SRC_SHARED "src/shared/*.cpp")
+
+add_executable(raytracer src/Main.cpp ${SRC_SHARED})
+
+target_include_directories(raytracer PUBLIC src/shared)
 
 set_target_properties(raytracer PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 

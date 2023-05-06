@@ -30,7 +30,7 @@ namespace RayTracer {
             /**
              * @brief Destroy the DLLoader object
              */
-            ~DLLoader() {dlclose(_handle);};
+            ~DLLoader() {dlclose(_handle);}
             /**
              * @brief Load the instance of the class
              * @param entryPoint

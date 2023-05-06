@@ -36,22 +36,21 @@ namespace RayTracer {
                 if (_map.find(type) == _map.end()) {
                     throw FactoryError("Unknown type: " + type);
                 }
-                return _map.at(type)();
+                DLLoader<T> *loader = _map[type].get();
+                return loader->getInstance();
             }
             /**
              * @brief Register a new loader
              * @param type
              * @param loader
              */
-            void registerLoader(const std::string &type, DLLoader<T> &loader) {
+            void registerLoader(const std::string &type, std::unique_ptr<DLLoader<T>> &loader) {
                 if (_map.find(type) != _map.end()) {
                     throw FactoryError("Type already exists: " + type);
                 }
-                _loaders.push_back(loader);
-                _map.emplace(type, std::bind(&DLLoader<T>::getInstance, &loader));
+                _map.emplace(type, std::move(loader));
             }
         private:
-            std::map<std::string, std::function<std::unique_ptr<T>()>> _map;
-            std::vector<DLLoader<T>> _loaders;
+            std::map<std::string, std::unique_ptr<DLLoader<T>>> _map;
     };
 }
