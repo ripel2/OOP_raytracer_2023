@@ -10,21 +10,21 @@
 #include <vector>
 #include <string>
 
-#include "ILight.hpp"
-#include "DirectionalLight.hpp"
+#include "IObject.hpp"
+#include "Plane.hpp"
 #include "PluginLoader.hpp"
 
-extern "C" std::unique_ptr<RayTracer::ILight> getInstance()
+extern "C" std::unique_ptr<RayTracer::IObject> getInstance()
 {
-    return std::make_unique<RayTracer::DirectionalLight>();
+    return std::make_unique<RayTracer::Plane>();
 }
 
 extern "C" std::unique_ptr<RayTracer::pluginType_t> getType()
 {
-    return std::make_unique<RayTracer::pluginType_t>(RayTracer::pluginType_t::LIGHT);
+    return std::make_unique<RayTracer::pluginType_t>(RayTracer::pluginType_t::OBJECT);
 }
 
 extern "C" std::unique_ptr<std::string> getName()
 {
-    return std::make_unique<std::string>("directional_light");
+    return std::make_unique<std::string>("plane");
 }

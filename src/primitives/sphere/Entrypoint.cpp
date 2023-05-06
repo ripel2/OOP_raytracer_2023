@@ -7,10 +7,24 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <string>
+
 #include "IObject.hpp"
 #include "Sphere.hpp"
+#include "PluginLoader.hpp"
 
-extern "C" std::unique_ptr<RayTracer::IObject> primitiveEntryPoint()
+extern "C" std::unique_ptr<RayTracer::IObject> getInstance()
 {
     return std::make_unique<RayTracer::Sphere>();
+}
+
+extern "C" std::unique_ptr<RayTracer::pluginType_t> getType()
+{
+    return std::make_unique<RayTracer::pluginType_t>(RayTracer::pluginType_t::OBJECT);
+}
+
+extern "C" std::unique_ptr<std::string> getName()
+{
+    return std::make_unique<std::string>("sphere");
 }

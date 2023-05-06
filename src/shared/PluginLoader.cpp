@@ -9,15 +9,15 @@
 
 void RayTracer::PluginLoader::LoadPlugins(const std::string &path)
 {
-    pluginType_t type;
-
     try {
         for (const auto &entry : std::filesystem::directory_iterator(path)) {
             if (entry.path().extension() == ".so") {
+                pluginType_t type = OBJECT;
+
                 try {
                     DLLoader<pluginType_t> loader(entry.path());
                     loader.loadInstance("getType");
-                    pluginType_t type = (*loader.getInstance());
+                    type = *(loader.getInstance().get());
                 } catch (const DLLoaderError &e) {
                     throw PluginLoaderError("Error while loading plugin: " + entry.path().string() + "\n" + e.what());
                 }

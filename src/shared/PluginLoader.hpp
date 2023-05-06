@@ -63,12 +63,12 @@ namespace RayTracer {
             template<typename T>
             void LoadPlugin(const std::string &path, Factory<T> &factory)
             {
-                DLLoader<std::string> nameLoader(path);
-                DLLoader<T> objectLoader(path);
+                std::unique_ptr<DLLoader<std::string>> nameLoader = std::make_unique<DLLoader<std::string>>(path);
+                std::unique_ptr<DLLoader<T>> objectLoader = std::make_unique<DLLoader<T>>(path);
 
-                nameLoader.loadInstance("getName");
-                objectLoader.loadInstance("getInstance");
-                factory.registerLoader((*nameLoader.getInstance()), objectLoader);
+                nameLoader->loadInstance("getName");
+                objectLoader->loadInstance("getInstance");
+                factory.registerLoader((*nameLoader->getInstance()), objectLoader);
             }
             Factory<IObject> _objectFactory;
             Factory<ILight> _lightFactory;
