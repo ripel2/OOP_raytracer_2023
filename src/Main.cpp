@@ -7,33 +7,25 @@
 
 #include "PluginLoader.hpp"
 
-#include "LightBuilder.hpp"
-#include "MaterialBuilder.hpp"
-#include "ObjectBuilder.hpp"
+#include "Parser.hpp"
 
 int main(int ac, char **av)
 {
     RayTracer::PluginLoader loader;
+    RayTracer::Parser parser(&loader);
+
     loader.LoadPlugins("./plugins");
-    RayTracer::Factory<RayTracer::IObject> &objectFactory = loader.getObjectFactory();
-    RayTracer::Factory<RayTracer::ILight> &lightFactory = loader.getLightFactory();
-    RayTracer::Factory<RayTracer::IMaterial> &materialFactory = loader.getMaterialFactory();
 
-    std::shared_ptr<RayTracer::ILight> al = std::move(lightFactory.createInstance("ambient_light"));
-    std::shared_ptr<RayTracer::ILight> dl = std::move(lightFactory.createInstance("directional_light"));
+    // add error handling
+    try {
+        parser.parse(av[1]);
+    } catch (const RayTracer::ParserError &e) {
+        std::cerr << e.what() << std::endl;
+        return 84;
+    }
+    std::unique_ptr<RayTracer::Scene> scene = std::move(parser.getScene());
+    std::unique_ptr<RayTracer::IRenderer> renderer = std::move(parser.getRenderer());
 
-    std::shared_ptr<RayTracer::IMaterial> mat = std::move(materialFactory.createInstance("flat_color"));
-
-    std::shared_ptr<RayTracer::IObject> sphere = std::move(objectFactory.createInstance("sphere"));
-
-    RayTracer::LightBuilder alb(al.get());
-    RayTracer::LightBuilder dlb(dl.get());
-
-    RayTracer::MaterialBuilder mb(mat.get());
-
-    RayTracer::ObjectBuilder sb(sphere.get());
-
-    alb.set("intensity", 0.4);
-    alb.set("color", RayTracer::Color(1, 0.5, 1));
+    renderer->render(parser.getImageWidth(), parser.getImageHeight(), *scene);
     return 0;
 }
