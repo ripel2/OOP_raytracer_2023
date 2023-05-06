@@ -6,11 +6,20 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-gnu-unique")
 
-file(GLOB SRC_SHARED "src/shared/*.cpp")
+add_compile_options(-O3 -march=native -ffast-math -flto)
 
-add_executable(raytracer src/Main.cpp ${SRC_SHARED})
+file(GLOB SRC_SHARED "src/shared/*.cpp")
+file(GLOB SRC_MAIN "src/main/*.cpp")
+
+add_executable(raytracer src/Main.cpp ${SRC_SHARED} ${SRC_MAIN})
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(LIBCONFIG REQUIRED libconfig++)
+target_link_libraries(raytracer ${LIBCONFIG_LIBRARIES})
+target_include_directories(raytracer PUBLIC ${LIBCONFIG_INCLUDE_DIRS})
 
 target_include_directories(raytracer PUBLIC src/shared)
+target_include_directories(raytracer PUBLIC src/main)
 
 set_target_properties(raytracer PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
