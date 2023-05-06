@@ -7,32 +7,45 @@
 
 #include "Scene.hpp"
 
-void RayTracer::Scene::addObject(const std::shared_ptr<RayTracer::IObject> &object)
+RayTracer::Scene::Scene()
 {
-    _objects.push_back(object);
 }
 
-void RayTracer::Scene::addLight(const std::shared_ptr<RayTracer::ILight> &light)
+RayTracer::Scene::~Scene()
 {
-    _lights.push_back(light);
+    for (auto &object : _objects)
+        delete object;
+    for (auto &light : _lights)
+        delete light;
+    delete _camera;
 }
 
-void RayTracer::Scene::setCamera(const std::shared_ptr<RayTracer::Camera> &camera)
+void RayTracer::Scene::addObject(std::unique_ptr<RayTracer::IObject> &object)
 {
-    _camera = camera;
+    _objects.push_back(object.release());
 }
 
-const std::vector<std::shared_ptr<RayTracer::IObject>> &RayTracer::Scene::getObjects() const
+void RayTracer::Scene::addLight(std::unique_ptr<RayTracer::ILight> &light)
+{
+    _lights.push_back(light.release());
+}
+
+void RayTracer::Scene::setCamera(std::unique_ptr<RayTracer::Camera> &camera)
+{
+    _camera = camera.release();
+}
+
+const std::vector<RayTracer::IObject *> &RayTracer::Scene::getObjects() const
 {
     return _objects;
 }
 
-const std::vector<std::shared_ptr<RayTracer::ILight>> &RayTracer::Scene::getLights() const
+const std::vector<RayTracer::ILight *> &RayTracer::Scene::getLights() const
 {
     return _lights;
 }
 
-const std::shared_ptr<RayTracer::Camera> &RayTracer::Scene::getCamera() const
+const RayTracer::Camera *RayTracer::Scene::getCamera() const
 {
     return _camera;
 }

@@ -52,6 +52,19 @@ namespace RayTracer {
             const char *what() const noexcept override {return _message.c_str();}
     };
 
+    class BuilderError : public Errors {
+        public:
+            /**
+             * @brief Construct a new BuilderError object
+             * @param message
+             */
+            BuilderError(std::string const &message) {_message = message;}
+            /**
+             * @brief Destroy the BuilderError object
+             */
+            const char *what() const noexcept override {return _message.c_str();}
+    };
+
     class PluginLoaderError : public Errors {
         public:
             /**
@@ -61,6 +74,19 @@ namespace RayTracer {
             PluginLoaderError(std::string const &message) {_message = message;}
             /**
              * @brief Destroy the PluginLoaderError object
+             */
+            const char *what() const noexcept override {return _message.c_str();}
+    };
+
+    class ParserError : public Errors {
+        public:
+            /**
+             * @brief Construct a new ParserError object
+             * @param message
+             */
+            ParserError(std::string const &message) {_message = message;}
+            /**
+             * @brief Destroy the ParserError object
              */
             const char *what() const noexcept override {return _message.c_str();}
     };
