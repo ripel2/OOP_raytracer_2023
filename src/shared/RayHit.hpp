@@ -20,7 +20,7 @@ namespace RayTracer {
             Math::Point<3> point;
             Math::Vector<3> normal;
             double distance;
-            std::shared_ptr<IObject> object;
+            IObject *object;
 
     };
 }

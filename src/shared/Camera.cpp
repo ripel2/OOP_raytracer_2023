@@ -31,5 +31,8 @@ RayTracer::Camera::Camera(const Math::Point<3> &origin, const Math::Point<3> &lo
 
 RayTracer::Ray RayTracer::Camera::getRay(double u, double v) const
 {
-    return Ray(_origin, _lowerLeftCorner + _horizontal * u + _vertical * v - _origin);
+    Math::Vector<3> dir = _lowerLeftCorner + _horizontal * u + _vertical * v - _origin;
+
+    dir.normalize();
+    return Ray(_origin, dir);
 }
