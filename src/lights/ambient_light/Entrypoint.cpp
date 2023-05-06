@@ -16,7 +16,19 @@
 
 extern "C" std::unique_ptr<RayTracer::ILight> getInstance()
 {
-    return std::make_unique<RayTracer::AmbientLight>();
+    std::unique_ptr<RayTracer::ILight> instance = std::make_unique<RayTracer::AmbientLight>();
+    std::cout << "Owned ptr: " << instance.get() << std::endl;
+    return instance;
+}
+
+extern "C" std::unique_ptr<RayTracer::pluginType_t> getType()
+{
+    return std::make_unique<RayTracer::pluginType_t>(RayTracer::pluginType_t::LIGHT);
+}
+
+extern "C" std::unique_ptr<std::string> getName()
+{
+    return std::make_unique<std::string>("ambient_light");
 }
 
 extern "C" std::unique_ptr<RayTracer::pluginType_t> getType()
