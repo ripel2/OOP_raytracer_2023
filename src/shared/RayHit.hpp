@@ -15,12 +15,10 @@
 namespace RayTracer {
     class IObject;
 
-    class RayHit {
-        public:
-            Math::Point<3> point;
-            Math::Vector<3> normal;
-            double distance;
-            IObject *object;
-
+    struct RayHit {
+        Math::Point<3> point;
+        Math::Vector<3> normal;
+        double distance;
+        IObject *object;
     };
 }

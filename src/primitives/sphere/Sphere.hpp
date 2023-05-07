@@ -12,9 +12,12 @@
 namespace RayTracer {
     class Sphere : public AObject {
         public:
+            /**
+             * @brief Sphere constructor
+            */
             Sphere();
 
-            bool hits(const RayTracer::Ray &ray, RayHit &hit) const;
+            bool hits(const RayTracer::Ray &ray, RayHit &hit) const override;
 
             virtual double getRadius() const noexcept;
 

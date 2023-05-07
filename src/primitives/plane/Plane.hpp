@@ -12,9 +12,12 @@
 namespace RayTracer {
     class Plane : public AObject {
         public:
+            /**
+             * @brief Plane constructor
+            */
             Plane();
 
-            bool hits(const RayTracer::Ray &ray, RayHit &hit) const;
+            bool hits(const RayTracer::Ray &ray, RayHit &hit) const override;
 
             Math::Vector<3> getDistance() const noexcept override;
 
