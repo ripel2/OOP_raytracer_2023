@@ -37,6 +37,13 @@ namespace RayTracer {
              * @param name The name of the setter to call
              * @param value The value to pass to the setter
             */
+            void set(const std::string &name, const int &value);
+
+            /**
+             * @brief Call a setter on the object
+             * @param name The name of the setter to call
+             * @param value The value to pass to the setter
+            */
             void set(const std::string &name, const Color &value);
 
             /**

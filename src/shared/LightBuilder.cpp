@@ -18,8 +18,18 @@ void RayTracer::LightBuilder::set(const std::string &name, const double &value)
 {
     if (name == "intensity")
         _light->setIntensity(value);
+    else if (name == "shadowRayOffset" || name == "shadow_ray_offset")
+        _light->setShadowRayOffset(value);
     else
         throw RayTracer::BuilderError("LightBuilder: " + name + " is not a valid setter or doesn't take a double");
+}
+
+void RayTracer::LightBuilder::set(const std::string &name, const int &value)
+{
+    if (name == "shadowRayCount" || name == "shadow_ray_count")
+        _light->setShadowRayCount(value);
+    else
+        throw RayTracer::BuilderError("LightBuilder: " + name + " is not a valid setter or doesn't take an int");
 }
 
 void RayTracer::LightBuilder::set(const std::string &name, const Color &value)

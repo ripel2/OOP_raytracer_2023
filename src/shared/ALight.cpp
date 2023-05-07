@@ -59,3 +59,27 @@ void RayTracer::ALight::setPosition(const Math::Point<3> &position) noexcept
     std::cerr << "Warning : Called ALight::setPosition() function from abstract" << std::endl;
     (void)position;
 }
+
+double RayTracer::ALight::getShadowRayOffset() const noexcept
+{
+    std::cerr << "Warning : Called ALight::getShadowRayOffset() function from abstract" << std::endl;
+    return 0;
+}
+
+void RayTracer::ALight::setShadowRayOffset(double shadowRayOffset) noexcept
+{
+    std::cerr << "Warning : Called ALight::setShadowRayOffset() function from abstract" << std::endl;
+    (void)shadowRayOffset;
+}
+
+int RayTracer::ALight::getShadowRayCount() const noexcept
+{
+    std::cerr << "Warning : Called ALight::getShadowRayCount() function from abstract" << std::endl;
+    return 0;
+}
+
+void RayTracer::ALight::setShadowRayCount(int shadowRayCount) noexcept
+{
+    std::cerr << "Warning : Called ALight::setShadowRayCount() function from abstract" << std::endl;
+    (void)shadowRayCount;
+}

@@ -204,9 +204,10 @@ void RayTracer::Parser::_parseLight(const libconfig::Setting &setting)
     
     RayTracer::LightBuilder builder(light.get());
     std::string colors[] = {"color"};
-    std::string doubles[] = {"intensity"};
+    std::string doubles[] = {"intensity", "shadow_ray_offset", "shadowRayOffset"};
     std::string points[] = {"position"};
     std::string vectors[] = {"direction"};
+    std::string ints[] = {"shadowRayCount", "shadow_ray_count"};
 
     for (const std::string &param: colors) {
         if (setting.exists(param)) {
@@ -235,6 +236,11 @@ void RayTracer::Parser::_parseLight(const libconfig::Setting &setting)
             if (!(cparam.isArray() || cparam.isList()) || cparam.getLength() != 3)
                 throw RayTracer::ParserError("Light " + param + " must be a list of three values");
             builder.set(param, Math::Vector<3>({_getDouble(cparam[0]), _getDouble(cparam[1]), _getDouble(cparam[2])}));
+        }
+    }
+    for (const std::string &param: ints) {
+        if (setting.exists(param)) {
+            builder.set(param, _getInt(setting[param.c_str()]));
         }
     }
     _scene->addLight(light);
