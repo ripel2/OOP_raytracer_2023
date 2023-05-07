@@ -10,10 +10,9 @@
 #include "Point.hpp"
 
 namespace RayTracer {
-    class RayHit {
-        public:
-            Math::Point<3> point;
-            Math::Vector<3> normal;
-            double distance;
+    struct RayHit {
+        Math::Point<3> point;
+        Math::Vector<3> normal;
+        double distance;
     };
 }
