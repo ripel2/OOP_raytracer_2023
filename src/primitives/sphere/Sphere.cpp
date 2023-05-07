@@ -40,6 +40,7 @@ bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, RayHit &hit) const
             hit.normal = Math::Vector<3>(hit.point - _center) / _radius;
         }
     }
+    hit.normal.normalize();
     return true;
 }
 

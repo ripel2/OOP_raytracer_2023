@@ -55,5 +55,5 @@ Math::Vector<3> RayTracer::Plane::getNormal() const noexcept
 
 void RayTracer::Plane::setNormal(const Math::Vector<3> &normal) noexcept
 {
-    _normal = normal;
+    _normal = normal.getNormalized();
 }
