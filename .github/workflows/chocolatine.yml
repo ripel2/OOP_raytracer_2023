@@ -53,12 +53,16 @@ jobs:
         with:
           fetch-depth: 0
           submodules: true
+      
+      - name: Install dependencies
+        run: |
+          sudo dnf install -y libconfig-devel
 
       - run: cmake . -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -B ./build/
-        timeout-minutes: 2
+        timeout-minutes: 5
 
       - run: cmake --build ./build/
-        timeout-minutes: 5
+        timeout-minutes: 20
 
       - name: Verifies that files are present and executable
         run: |
