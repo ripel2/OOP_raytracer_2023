@@ -30,7 +30,7 @@ namespace RayTracer {
 
             Math::Point<3> getPosition() const noexcept override;
 
-            void setPosition(const Math::Point<3> &position) noexcept;
+            void setPosition(const Math::Point<3> &position) noexcept override;
 
             RayTracer::Color getColor() const noexcept override;
 
