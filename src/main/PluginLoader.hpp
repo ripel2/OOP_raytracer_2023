@@ -14,14 +14,9 @@
 #include "ILight.hpp"
 #include "IObject.hpp"
 #include "Factory.hpp"
+#include "PluginType.hpp"
 
 namespace RayTracer {
-    typedef enum pluginType_e {
-        OBJECT = 0,
-        LIGHT = 1,
-        MATERIAL = 2
-    } pluginType_t;
-
     class PluginLoader {
         public:
             /**
