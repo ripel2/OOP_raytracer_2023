@@ -117,6 +117,7 @@ namespace RayTracer {
              * it is used for point lights and spotlights
             */
             virtual void setShadowRayCount(int shadowRayCount) noexcept;
+
         protected:
             double _intensity;
     };

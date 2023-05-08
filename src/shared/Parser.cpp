@@ -209,6 +209,7 @@ void RayTracer::Parser::_parseLight(const libconfig::Setting &setting)
     std::string vectors[] = {"direction"};
     std::string ints[] = {"shadowRayCount", "shadow_ray_count"};
 
+
     for (const std::string &param: colors) {
         if (setting.exists(param)) {
             const libconfig::Setting &cparam = setting[param.c_str()];

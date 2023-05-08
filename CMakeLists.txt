@@ -18,6 +18,8 @@ pkg_check_modules(LIBCONFIG REQUIRED libconfig++)
 target_link_libraries(raytracer ${LIBCONFIG_LIBRARIES})
 target_include_directories(raytracer PUBLIC ${LIBCONFIG_INCLUDE_DIRS})
 
+target_link_libraries(raytracer dl)
+
 target_include_directories(raytracer PUBLIC src/shared)
 target_include_directories(raytracer PUBLIC src/main)
 
@@ -28,3 +30,4 @@ add_subdirectory(src/primitives/plane)
 add_subdirectory(src/materials/flat_color)
 add_subdirectory(src/lights/directional_light)
 add_subdirectory(src/lights/ambient_light)
+add_subdirectory(src/lights/point_light)
