@@ -28,7 +28,7 @@ namespace RayTracer {
             RayTracer::Color applyLight(const Color &pixel, const Ray &ray,
             const RayHit &hit, const std::vector<RayTracer::IObject *> &objects) const override;
 
-            Math::Point<3> getPosition() const noexcept;
+            Math::Point<3> getPosition() const noexcept override;
 
             void setPosition(const Math::Point<3> &position) noexcept;
 
