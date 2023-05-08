@@ -29,7 +29,6 @@ void RayTracer::SfmlRenderer::render(std::size_t width, std::size_t height, cons
     size_t size = 1;
 
     for (std::size_t i = 0; i < height; i++) {
-        printf("Rendering line %ld/%ld\n", i, height);
         for (std::size_t j = 0; j < width; j++) {
             Color color = getColor((double)j / (double)width, 1.0 - ((double)i / (double)height), scene);
             array[index].position = sf::Vector2f(j, i);
