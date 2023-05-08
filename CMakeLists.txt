@@ -20,6 +20,8 @@ target_include_directories(raytracer PUBLIC ${LIBCONFIG_INCLUDE_DIRS})
 
 target_link_libraries(raytracer dl)
 
+target_link_libraries(raytracer sfml-graphics sfml-window sfml-system)
+
 target_include_directories(raytracer PUBLIC src/shared)
 target_include_directories(raytracer PUBLIC src/main)
 
