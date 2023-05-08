@@ -12,7 +12,7 @@
 
 #include "ILight.hpp"
 #include "AmbientLight.hpp"
-#include "PluginLoader.hpp"
+#include "PluginType.hpp"
 
 extern "C" std::unique_ptr<RayTracer::ILight> getInstance()
 {
