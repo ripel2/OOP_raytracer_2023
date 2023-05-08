@@ -13,6 +13,8 @@
 #include "Scatter.hpp"
 
 namespace RayTracer {
+    class RayHit;
+
     class IMaterial {
         public:
             /**

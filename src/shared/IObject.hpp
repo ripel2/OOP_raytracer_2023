@@ -14,6 +14,9 @@
 #include <memory>
 
 namespace RayTracer {
+    class RayHit;
+    class IMaterial;
+
     class IObject {
         public:
             /**

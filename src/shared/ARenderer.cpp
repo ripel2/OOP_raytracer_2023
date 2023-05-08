@@ -21,6 +21,7 @@ RayTracer::Color RayTracer::ARenderer::getColor(double u, double v, const RayTra
         bool hits = object->hits(ray, tmp);
         if (hits && (closest == nullptr || tmp.distance < rayHit.distance)) {
             rayHit = tmp;
+            rayHit.object = object;
             closest = object;
         }
     }

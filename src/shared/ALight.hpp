@@ -86,6 +86,38 @@ namespace RayTracer {
             */
             virtual void setPosition(const Math::Point<3> &position) noexcept;
 
+            /**
+             * @brief Get the shadow ray offset of the light
+             * @return The shadow ray offset of the light
+             * @note The shadow ray offset is the maximum distance to create random shadow rays 
+             * from the light position
+            */
+            virtual double getShadowRayOffset() const noexcept;
+
+            /**
+             * @brief Set the shadow ray offset of the light
+             * @param shadowRayOffset The shadow ray offset to set
+             * @note The shadow ray offset is the maximum distance to create random shadow rays
+             * from the light position
+            */
+            virtual void setShadowRayOffset(double shadowRayOffset) noexcept;
+
+            /**
+             * @brief Get the shadow ray bias of the light
+             * @return The shadow ray bias of the light
+             * @note The shadow ray bias is the number of rays to cast to check if a point is in shadow
+             * it is used for point lights and spotlights
+            */
+            virtual int getShadowRayCount() const noexcept;
+
+            /**
+             * @brief Set the shadow ray bias of the light
+             * @param shadowRayCount The shadow ray bias to set
+             * @note The shadow ray bias is the number of rays to cast to check if a point is in shadow
+             * it is used for point lights and spotlights
+            */
+            virtual void setShadowRayCount(int shadowRayCount) noexcept;
+
         protected:
             double _intensity;
     };

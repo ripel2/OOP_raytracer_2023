@@ -32,7 +32,7 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray, RayHit &hit) const
         return false;
     if (std::abs(extent[2]) > 0.001 && std::abs(p0p[2]) > extent[2])
         return false;
-    hit.distance = t;
+    hit.distance = std::abs(t);
     hit.point = point;
     hit.normal = getNormal();
     return true;
@@ -55,5 +55,5 @@ Math::Vector<3> RayTracer::Plane::getNormal() const noexcept
 
 void RayTracer::Plane::setNormal(const Math::Vector<3> &normal) noexcept
 {
-    _normal = normal;
+    _normal = normal.getNormalized();
 }
