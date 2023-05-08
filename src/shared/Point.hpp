@@ -17,11 +17,18 @@ namespace Math {
     template<std::size_t N>
     class Point : public ScalarList<N> {
         public:
+
+            /**
+             * @brief Point constructor
+             */
             Point()
                 : ScalarList<N>()
             {
             }
 
+            /**
+             * @brief Point constructor with arguments
+             */
             Point(const double (&args)[N])
                 : ScalarList<N>(args)
             {

@@ -11,11 +11,15 @@
 #include <iostream>
 #include <vector>
 
+
+#include "Point.hpp"
+#include "Vector.hpp"
+
 namespace Math {
     class Matrix {
         protected:
             std::size_t rows, cols;
-            std::vector<std::vector<double>> _matrix;
+            std::array<std::array<double, 4>, 4> _matrix;
 
         public:
             Matrix(std::size_t rows_, std::size_t cols_);
@@ -56,14 +60,21 @@ namespace Math {
             Matrix operator+(const Matrix &other);
 
             Matrix &operator+=(const Matrix &other);
-            Matrix operator-(const Matrix &other);
+
+            Matrix operator-(const Matrix &other) const;
             Matrix &operator-=(const Matrix &other);
-            Matrix operator*(const Matrix &other);
+            Matrix operator*(const Matrix &other) const;
             Matrix &operator*=(const Matrix &other);
-            Matrix operator*(double scalar);
+
+            Matrix operator*(double scalar) const;
             Matrix &operator*=(double scalar);
-            Matrix operator/(double scalar);
+            Matrix operator/(double scalar) const;
             Matrix &operator/=(double scalar);
+
+            Math::Point<3> operator*(const Math::Point<3> &point) const;
+            Math::Vector<3> operator*(const Math::Vector<3> &vector) const;
+            Math::Point<4> operator*(const Math::Point<4> &point) const;
+            Math::Vector<4> operator*(const Math::Vector<4> &vector) const;
 
             Matrix &operator=(const Matrix &other);
             Matrix &operator=(Matrix &&other);
@@ -109,4 +120,3 @@ namespace Math {
     */
     std::ostream &operator<<(std::ostream &os, const Math::Matrix &matrix);
 }
-

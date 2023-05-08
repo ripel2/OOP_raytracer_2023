@@ -19,20 +19,33 @@ namespace Math {
     template<std::size_t N>
     class Vector : public ScalarList<N> {
         public:
+            /**
+             * @brief Vector constructor
+             */
             Vector()
                 : ScalarList<N>()
             {
             }
 
+            /**
+             * @brief Vector constructor with arguments
+             */
             Vector(const double (&args)[N])
                 : ScalarList<N>(args)
             {
             }
 
+            /**
+             * @brief Vector copy constructor
+             */
             Vector(const Vector &other)
                 : ScalarList<N>(other)
             {
             }
+
+            /**
+             * @brief Vector move constructor
+             */
             Vector(Vector &&other)
                 : ScalarList<N>(std::move(other))
             {

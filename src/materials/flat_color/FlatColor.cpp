@@ -7,6 +7,12 @@
 
 #include "FlatColor.hpp"
 
+
+RayTracer::FlatColor::FlatColor()
+    : _color()
+{
+}
+
 RayTracer::Color RayTracer::FlatColor::getPointColor(const RayTracer::Ray &ray, const RayTracer::RayHit &hit) const
 {
     (void)ray;

@@ -8,12 +8,17 @@
 #pragma once
 
 #include "Point.hpp"
+#include "IObject.hpp"
+
+#include <memory>
 
 namespace RayTracer {
-    class RayHit {
-        public:
-            Math::Point<3> point;
-            Math::Vector<3> normal;
-            double distance;
+    class IObject;
+
+    struct RayHit {
+        Math::Point<3> point;
+        Math::Vector<3> normal;
+        double distance;
+        IObject *object;
     };
 }

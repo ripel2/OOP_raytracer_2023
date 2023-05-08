@@ -15,7 +15,7 @@ namespace RayTracer {
             /**
              * @brief FlatColor constructor
              */
-            explicit FlatColor() = default;
+            explicit FlatColor();
 
             /**
              * @brief FlatColor destructor

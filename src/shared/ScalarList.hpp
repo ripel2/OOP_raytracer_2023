@@ -15,19 +15,35 @@ namespace Math {
     template<std::size_t N>
     class ScalarList {
         protected:
+
+            /**
+             * @brief ScalarList constructor
+             */
             ScalarList()
             {
                 for (std::size_t c = 0; c < N; c++) {
                     this->_co[c] = 0;
                 }
             }
+
+            /**
+             * @brief ScalarList constructor with arguments
+            */
             ScalarList(const double (&args)[N])
             {
                 for (std::size_t c = 0; c < N; c++) {
                     this->_co[c] = args[c];
                 }
             }
+
+            /**
+             * @brief ScalarList copy constructor
+            */
             ScalarList(const ScalarList &other) = default;
+
+            /**
+             * @brief ScalarList move constructor
+            */
             ScalarList(ScalarList &&other)
             {
                 for (std::size_t c = 0; c < N; c++) {
@@ -35,6 +51,10 @@ namespace Math {
                     other._co[c] = 0;
                 }
             }
+
+            /**
+             * @brief ScalarList destructor
+            */
             ~ScalarList() = default;
 
         public:
