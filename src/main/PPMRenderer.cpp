@@ -23,6 +23,7 @@ void RayTracer::PPMRenderer::render(std::size_t width, std::size_t height, const
     file << "P3" << std::endl;
     file << width << " " << height << " " << 255 << std::endl;
     for (std::size_t i = 0; i < height; i++) {
+        std::cout << "\rRendering: " << (int)(((double)i / (double)height) * 100) << "%" << std::flush;
         for (std::size_t j = 0; j < width; j++) {
             Color color = getColor((double)j / (double)width, 1.0 - ((double)i / (double)height), scene);
 
@@ -31,4 +32,5 @@ void RayTracer::PPMRenderer::render(std::size_t width, std::size_t height, const
         file << std::endl;
     }
     file.close();
+    std::cout << "\rRendering: 100%" << std::endl;
 }

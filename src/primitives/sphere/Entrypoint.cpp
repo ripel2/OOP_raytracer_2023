@@ -12,7 +12,7 @@
 
 #include "IObject.hpp"
 #include "Sphere.hpp"
-#include "PluginLoader.hpp"
+#include "PluginType.hpp"
 
 extern "C" std::unique_ptr<RayTracer::IObject> getInstance()
 {
