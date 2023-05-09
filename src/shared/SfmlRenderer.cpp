@@ -23,7 +23,7 @@ RayTracer::SfmlRenderer::~SfmlRenderer()
 void RayTracer::SfmlRenderer::render(std::size_t width, std::size_t height, const Scene &scene)
 {
     this->window.clear();
-    sf::VertexArray array(sf::Points, width * height);
+    sf::VertexArray array(sf::Points, 1);
     std::size_t index = 0;
     sf::Event event;
     size_t size = 1;
@@ -31,9 +31,9 @@ void RayTracer::SfmlRenderer::render(std::size_t width, std::size_t height, cons
         for (std::size_t i = 0; i < height; i++) {
             for (std::size_t j = 0; j < width; j++) {
                 Color color = getColor((double)j / (double)width, 1.0 - ((double)i / (double)height), scene);
-                array[index].position = sf::Vector2f(j, i);
-                array[index].color = sf::Color(color[0] * 255, color[1] * 255, color[2] * 255);
-                window.draw(&array[index], size, sf::Points);
+                array[0].position = sf::Vector2f(j, i);
+                array[0].color = sf::Color(color[0] * 255, color[1] * 255, color[2] * 255);
+                window.draw(&array[0], size, sf::Points);
             }
         }
         window.display();
