@@ -38,9 +38,6 @@ fclean:		clean
 
 re:		fclean $(NAME)
 
-coverage:	$(NAME)
-	./$(NAME)
-
 debug:		CXXFLAGS += -g3
 debug:		re
 
