@@ -139,12 +139,14 @@ void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
 
     std::string lowerType = renderer["type"];
     std::transform(lowerType.begin(), lowerType.end(), lowerType.begin(), [](unsigned char c) { return std::tolower(c); });
-    
+
     _imageWidth = _getInt(renderer["width"]);
     _imageHeight = _getInt(renderer["height"]);
 
     if (lowerType == "ppmrenderer") {
         _renderer = std::make_unique<RayTracer::PPMRenderer>(renderer["filename"]);
+    } else if (lowerType == "sfmlrenderer") {
+        _renderer = std::make_unique<RayTracer::SFMLRenderer>(renderer["filename"]);
     } else {
         throw RayTracer::ParserError("Unknown renderer type: " + renderer["type"]);
     }
