@@ -291,8 +291,13 @@ void RayTracer::Parser::_parseObject(const libconfig::Setting &setting)
     }
     for (const std::string &param: matNames) {
         if (setting.exists(param)) {
-            builder.set(param, _materials[setting[param.c_str()]]);
+            std::shared_ptr<RayTracer::IMaterial> material = _materials[setting[param.c_str()].c_str()];
+            if (!material)
+                throw RayTracer::ParserError("Material " + std::string(setting[param.c_str()].c_str()) + " does not exist");
+            builder.set(param, material);
         }
     }
+    if (!setting.exists("material"))
+        throw RayTracer::ParserError("Object must have a material");
     _scene->addObject(object);
 }
