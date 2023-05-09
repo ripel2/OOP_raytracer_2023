@@ -24,6 +24,7 @@ target_include_directories(raytracer PUBLIC src/shared)
 target_include_directories(raytracer PUBLIC src/main)
 
 set_target_properties(raytracer PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
+set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES ${PROJECT_SOURCE_DIR}/plugins)
 
 add_subdirectory(src/primitives/sphere)
 add_subdirectory(src/primitives/plane)
