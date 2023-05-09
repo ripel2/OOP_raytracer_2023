@@ -6,3 +6,6 @@ raytracer
 
 build/
 
+*.gc*
+unit_tests
+tests/unit_tests
