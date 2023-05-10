@@ -19,6 +19,7 @@ target_link_libraries(raytracer ${LIBCONFIG_LIBRARIES})
 target_include_directories(raytracer PUBLIC ${LIBCONFIG_INCLUDE_DIRS})
 
 target_link_libraries(raytracer dl)
+target_link_libraries(raytracer pthread)
 
 target_include_directories(raytracer PUBLIC src/shared)
 target_include_directories(raytracer PUBLIC src/main)
