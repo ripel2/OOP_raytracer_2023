@@ -19,7 +19,7 @@ namespace RayTracer {
              * @brief SfmlRenderer constructor
              * @param filename The filename of the image
              */
-            SfmlRenderer(const std::string &filename);
+            SfmlRenderer(size_t width, size_t height);
 
             /**
              * @brief SfmlRenderer destructor
@@ -36,12 +36,33 @@ namespace RayTracer {
 
         private:
             /**
-             * @brief The filename of the image
-             */
-            std::string filename;
-            /**
              * @brief The sfml window
              */
-            sf::RenderWindow window;
+            sf::RenderWindow _window;
+
+            /**
+             * @brief The sfml image
+             */
+            sf::Image _image;
+
+            /**
+             * @brief The sfml texture
+             */
+            sf::Texture _texture;
+
+            /**
+             * @brief The sfml sprite
+             */
+            sf::Sprite _sprite;
+
+            /**
+             * @brief Zoom on the image
+             */
+            size_t _zoom = 0;
+
+            /**
+             * @brief Event handler
+             */
+            void event();
     };
 }
