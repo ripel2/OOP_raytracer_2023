@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "ALight.hpp"
 
 namespace RayTracer {
@@ -48,6 +50,7 @@ namespace RayTracer {
             RayTracer::Color _color;
             double _shadowRayOffset;
             int _shadowRayCount;
+            std::unique_ptr<unsigned int> _seed;
 
             /**
              * @brief Apply light to a pixel with a point light without any offset (no soft shadows)
