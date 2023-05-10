@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "ALight.hpp"
 
 namespace RayTracer {
@@ -52,6 +54,7 @@ namespace RayTracer {
             RayTracer::Color _color;
             double _shadowRayOffset;
             int _shadowRayCount;
+            std::unique_ptr<unsigned int> _seed;
             double _shadowRayBias;
 
             /**

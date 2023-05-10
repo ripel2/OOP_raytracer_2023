@@ -8,7 +8,7 @@
 #include "PointLight.hpp"
 
 RayTracer::PointLight::PointLight()
-    : _position(), _color(1, 1, 1), _shadowRayCount(0), _shadowRayOffset(0.0), _shadowRayBias(0.9999)
+    : _position(), _color(1, 1, 1), _shadowRayCount(0), _shadowRayOffset(0.0), _seed(std::make_unique<unsigned int>(time(nullptr))), _shadowRayBias(0.9999)
 {
 }
 
@@ -22,9 +22,9 @@ const RayHit &hit, const std::vector<RayTracer::IObject *> &objects) const
     }
     if (_shadowRayCount > 1 && _shadowRayOffset > 0.0) {
         for (std::size_t i = 0; i < _shadowRayCount; i++) {
-            double x = (rand() % 100) / 100.0;
-            double y = (rand() % 100) / 100.0;
-            double z = (rand() % 100) / 100.0;
+            double x = (rand_r(_seed.get()) % 100) / 100.0;
+            double y = (rand_r(_seed.get()) % 100) / 100.0;
+            double z = (rand_r(_seed.get()) % 100) / 100.0;
             x *= getShadowRayOffset();
             y *= getShadowRayOffset();
             z *= getShadowRayOffset();
