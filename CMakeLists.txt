@@ -27,6 +27,7 @@ set_target_properties(raytracer PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SO
 
 add_subdirectory(src/primitives/sphere)
 add_subdirectory(src/primitives/plane)
+add_subdirectory(src/primitives/cylinder)
 add_subdirectory(src/materials/flat_color)
 add_subdirectory(src/lights/directional_light)
 add_subdirectory(src/lights/ambient_light)
