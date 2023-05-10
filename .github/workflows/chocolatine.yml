@@ -84,11 +84,33 @@ jobs:
         if: env.FAIL_TASK == 'true'
         run: exit 1
 
+  run_unit_tests:
+    name: Runs the unit tests
+    runs-on: ubuntu-latest
+    needs: [check_program_compilation]
+    container: epitechcontent/epitest-docker:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install dependencies
+        run: |
+          sudo dnf install -y libconfig-devel
+
+      - name: Run tests
+        run: |
+          make -C tests
+          ./tests/unit_tests
+          make -C tests clean
+
   push_to_mirror:
     name: Pushes the current repository files to a given mirror repository
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' }}
-    needs: [check_program_compilation]
+    needs: [run_unit_tests]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
