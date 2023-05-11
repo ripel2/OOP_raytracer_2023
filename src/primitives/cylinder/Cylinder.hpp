@@ -31,7 +31,6 @@ namespace RayTracer {
             double _height;
 
             bool _hitsSide(const RayTracer::Ray &ray, RayHit &hit) const;
-            bool _hitsTop(const RayTracer::Ray &ray, RayHit &hit) const;
-            bool _hitsBottom(const RayTracer::Ray &ray, RayHit &hit) const;
+            bool _hitsCap(const RayTracer::Ray &ray, RayHit &hit, bool offsetBottom) const;
     };
 }
