@@ -8,7 +8,7 @@
 #include "PointLight.hpp"
 
 RayTracer::PointLight::PointLight()
-    : _position(), _color(255, 255, 255), _shadowRayCount(0), _shadowRayOffset(0.0), _seed(std::make_unique<unsigned int>(time(nullptr)))
+    : _position(), _color(1, 1, 1), _shadowRayCount(0), _shadowRayOffset(0.0), _seed(std::make_unique<unsigned int>(time(nullptr))), _shadowRayBias(0.9999)
 {
 }
 
@@ -49,18 +49,15 @@ RayTracer::Color RayTracer::PointLight::_applyLightOffset(const Color &pixel, co
 const RayHit &hit, const std::vector<RayTracer::IObject *> &objects, const Math::Point<3> &offset) const
 {
     Math::Point<3> position = getPosition() + offset;
+    Math::Vector<3> shadowDir = hit.point - position;
     Math::Vector<3> lightDir = position - hit.point;
-    Math::Vector<3> normalizedDir = lightDir.getNormalized();
-    RayTracer::Ray lightRay(position, normalizedDir);
-    RayHit lightHit;
-    RayHit cHit;
+    Ray shadowRay(position, shadowDir.getNormalized());
 
-    cHit.distance = 0.0;
-    hit.object->hits(lightRay, cHit);
     for (auto &object : objects) {
+        RayHit shadowHit;
         if (object == hit.object)
             continue;
-        if (object->hits(lightRay, lightHit) && lightHit.distance < cHit.distance) {
+        if (object->hits(shadowRay, shadowHit) && shadowHit.distance > 0.0 && shadowHit.distance < shadowDir.length() * getShadowRayBias()) {
             return RayTracer::Color();
         }
     }
@@ -111,4 +108,14 @@ int RayTracer::PointLight::getShadowRayCount() const noexcept
 void RayTracer::PointLight::setShadowRayCount(int count) noexcept
 {
     _shadowRayCount = count;
+}
+
+double RayTracer::PointLight::getShadowRayBias() const noexcept
+{
+    return _shadowRayBias;
+}
+
+void RayTracer::PointLight::setShadowRayBias(double bias) noexcept
+{
+    _shadowRayBias = bias;
 }

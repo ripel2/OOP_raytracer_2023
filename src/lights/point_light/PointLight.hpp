@@ -45,12 +45,17 @@ namespace RayTracer {
             int getShadowRayCount() const noexcept override;
 
             void setShadowRayCount(int count) noexcept override;
+
+            double getShadowRayBias() const noexcept override;
+
+            void setShadowRayBias(double bias) noexcept override;
         private:
             Math::Point<3> _position;
             RayTracer::Color _color;
             double _shadowRayOffset;
             int _shadowRayCount;
             std::unique_ptr<unsigned int> _seed;
+            double _shadowRayBias;
 
             /**
              * @brief Apply light to a pixel with a point light without any offset (no soft shadows)

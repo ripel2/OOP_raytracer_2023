@@ -204,7 +204,7 @@ void RayTracer::Parser::_parseLight(const libconfig::Setting &setting)
     
     RayTracer::LightBuilder builder(light.get());
     std::string colors[] = {"color"};
-    std::string doubles[] = {"intensity", "shadow_ray_offset", "shadowRayOffset"};
+    std::string doubles[] = {"intensity", "shadow_ray_offset", "shadowRayOffset", "shadowRayBias", "shadow_ray_bias"};
     std::string points[] = {"position"};
     std::string vectors[] = {"direction"};
     std::string ints[] = {"shadowRayCount", "shadow_ray_count"};
