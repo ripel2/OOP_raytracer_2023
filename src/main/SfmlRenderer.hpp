@@ -43,6 +43,7 @@ namespace RayTracer {
             sf::Image _image;
             sf::Texture _texture;
             sf::Sprite _sprite;
+            sf::View _view;
             size_t _zoom = 0;
             std::mutex _mutex;
 

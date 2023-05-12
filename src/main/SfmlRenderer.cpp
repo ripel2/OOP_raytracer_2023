@@ -13,6 +13,7 @@ RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height)
     this->_image.create(width, height, sf::Color::Black);
     this->_texture.loadFromImage(_image);
     this->_sprite.setTexture(_texture);
+    this->_view = this->_window.getDefaultView();
 }
 
 RayTracer::SfmlRenderer::~SfmlRenderer()
@@ -65,9 +66,12 @@ void RayTracer::SfmlRenderer::event()
             }
             if (event.key.code == sf::Keyboard::P) {
                 _zoom++;
+                _view.zoom(0.5);
+                _window.setView(_view);
             }
             if (event.key.code == sf::Keyboard::L) {
-                _zoom--;
+                _view.zoom(1.5);
+                _window.setView(_view);
             }
             if (event.key.code == sf::Keyboard::S) {
                 execScreenshot();
