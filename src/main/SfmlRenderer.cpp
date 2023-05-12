@@ -16,11 +16,6 @@ RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height)
     this->_view = this->_window.getDefaultView();
 }
 
-RayTracer::SfmlRenderer::~SfmlRenderer()
-{
-    this->_window.~RenderWindow();
-}
-
 static bool isFileExisting(const std::string &filename)
 {
     struct stat buffer;
@@ -84,6 +79,26 @@ void RayTracer::SfmlRenderer::event()
             if (event.key.code == sf::Keyboard::S) {
                 execScreenshot();
             }
+            if (event.key.code == sf::Keyboard::R) {
+                _view = _window.getDefaultView();
+                _window.setView(_view);
+            }
+            if (event.key.code == sf::Keyboard::Up) {
+                _view.move(0, -10);
+                _window.setView(_view);
+            }
+            if (event.key.code == sf::Keyboard::Down) {
+                _view.move(0, 10);
+                _window.setView(_view);
+            }
+            if (event.key.code == sf::Keyboard::Left) {
+                _view.move(-10, 0);
+                _window.setView(_view);
+            }
+            if (event.key.code == sf::Keyboard::Right) {
+                _view.move(10, 0);
+                _window.setView(_view);
+            }
         }
     }
 }
@@ -103,15 +118,19 @@ void *RayTracer::SfmlRenderer::execRenderThread(std::size_t width, std::size_t h
         for (std::size_t j = 0 ; j < width; j++) {
             Color color = getColor(static_cast<double>(j) / static_cast<double>(width), 1.0 - (static_cast<double>(i) / static_cast<double>(height)), scene);
             _mutex.lock();
-            _image.setPixel(j, i, sf::Color(static_cast<int>(color[0] * 255), static_cast<int>(color[1] * 255), static_cast<int>(color[2] * 255)));
             event();
             if (!_window.isOpen()) {
                 _mutex.unlock();
                 return nullptr;
             }
+            _image.setPixel(j, i, sf::Color(static_cast<int>(color[0] * 255), static_cast<int>(color[1] * 255), static_cast<int>(color[2] * 255)));
             _mutex.unlock();
         }
         _mutex.lock();
+        if (!_window.isOpen()) {
+            _mutex.unlock();
+            return nullptr;
+        }
         renderImage();
         _mutex.unlock();
     }
