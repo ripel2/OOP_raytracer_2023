@@ -49,8 +49,9 @@ bool RayTracer::Cylinder::_hitsSide(const RayTracer::Ray &ray, RayHit &hit) cons
     transformation(1, 3) = 0;
     trPosition[2] += transformation(2, 3);
     transformation(2, 3) = 0;
-    Math::Vector<3> direction = transformation.inverse() * ray.getDirection();
-    Math::Point<3> origin = transformation.inverse() * (ray.getOrigin() - trPosition);
+    Math::Matrix invTransformation = transformation.inverse();
+    Math::Vector<3> direction = invTransformation * ray.getDirection();
+    Math::Point<3> origin = invTransformation * (ray.getOrigin() - trPosition);
     RayTracer::Ray transformedRay(origin, direction);
     double a = direction[0] * direction[0] + direction[2] * direction[2];
     double b = 2 * (direction[0] * (origin[0] - center[0]) + direction[2] * (origin[2] - center[2]));
@@ -90,7 +91,7 @@ bool RayTracer::Cylinder::_hitsSide(const RayTracer::Ray &ray, RayHit &hit) cons
     normal.normalize();
     if (normal.dot(transformedRay.getDirection()) > 0)
         normal = normal * -1;
-    normal = transformation.inverse().transpose() * normal;
+    normal = invTransformation.transpose() * normal;
     normal.normalize();
     hit.distance = Math::Vector<3>(realPoint  - ray.getOrigin()).length();
     hit.point = realPoint;
@@ -109,8 +110,9 @@ bool RayTracer::Cylinder::_hitsCap(const RayTracer::Ray &ray, RayHit &hit, bool 
     transformation(1, 3) = 0;
     trPosition[2] += transformation(2, 3);
     transformation(2, 3) = 0;
-    Math::Vector<3> direction = transformation.inverse() * ray.getDirection();
-    Math::Point<3> origin = transformation.inverse() * (ray.getOrigin() - trPosition);
+    Math::Matrix invTransformation = transformation.inverse();
+    Math::Vector<3> direction = invTransformation * ray.getDirection();
+    Math::Point<3> origin = invTransformation * (ray.getOrigin() - trPosition);
     RayTracer::Ray transformedRay(origin, direction);
     if (offsetBottom)
         center[1] -= getHeight() / 2.0;
