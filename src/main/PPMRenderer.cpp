@@ -14,11 +14,19 @@ RayTracer::PPMRenderer::PPMRenderer(const std::string &filename)
 {
 }
 
-void *RayTracer::PPMRenderer::execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end)
+void *RayTracer::PPMRenderer::execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end, std::size_t samplesPerPixel)
 {
     for (std::size_t i = start; i < end; i++) {
         for (std::size_t j = 0; j < width; j++) {
-            Color color = getColor(static_cast<double>(j) / static_cast<double>(width), 1.0 - (static_cast<double>(i) / static_cast<double>(height)), scene);
+            Color color;
+            for (std::size_t k = 0; k < samplesPerPixel; k++) {
+                for (std::size_t l = 0; l < samplesPerPixel; l++) {
+                    double u = (j + (k / static_cast<double>(samplesPerPixel))) / width;
+                    double v = 1.0 - (i + (l / static_cast<double>(samplesPerPixel))) / height;
+                    color += getColor(u, v, scene);
+                }
+            }
+            color /= samplesPerPixel * samplesPerPixel;
             _image[i].push_back(color);
         }
         _mutex.lock();
@@ -29,7 +37,7 @@ void *RayTracer::PPMRenderer::execRenderThread(std::size_t width, std::size_t he
     return nullptr;
 }
 
-void RayTracer::PPMRenderer::render(std::size_t width, std::size_t height, const Scene &scene)
+void RayTracer::PPMRenderer::render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel)
 {
     std::fstream file(_filename, std::ios::out);
     std::vector<std::thread> threads;
@@ -46,7 +54,7 @@ void RayTracer::PPMRenderer::render(std::size_t width, std::size_t height, const
         throw std::runtime_error("Failed to open file");
     _image.resize(height);
     for (std::size_t i = 0; i < thread_nb; i++) {
-        threads.emplace_back(&PPMRenderer::execRenderThread, this, width, height, std::ref(scene), i * linesPerThread, (i + 1) * linesPerThread);
+        threads.emplace_back(&PPMRenderer::execRenderThread, this, width, height, std::ref(scene), i * linesPerThread, (i + 1) * linesPerThread, samplesPerPixel);
     }
     for (auto &thread : threads) {
         thread.join();
