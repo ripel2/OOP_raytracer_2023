@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-gnu-unique")
 
-add_compile_options(-O3 -march=native -ffast-math -flto)
+add_compile_options(-O3 -march=native -flto)
 
 file(GLOB SRC_SHARED "src/shared/*.cpp")
 file(GLOB SRC_MAIN "src/main/*.cpp")

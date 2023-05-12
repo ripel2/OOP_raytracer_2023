@@ -14,7 +14,15 @@ RayTracer::Sphere::Sphere()
 
 bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, RayHit &hit) const
 {
-    Math::Point<3> _center = getPosition();
+    Math::Matrix transformation = getTransformation();
+    Math::Point<3> trPosition = getPosition();
+    trPosition[0] += transformation(0, 3);
+    transformation(0, 3) = 0;
+    trPosition[1] += transformation(1, 3);
+    transformation(1, 3) = 0;
+    trPosition[2] += transformation(2, 3);
+    transformation(2, 3) = 0;
+    Math::Point<3> _center = trPosition;
     Math::Vector<3> oc = ray.getOrigin() - _center;
     auto a = ray.getDirection().lengthSquared();
     auto b = oc.dot(ray.getDirection());
