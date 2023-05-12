@@ -32,13 +32,14 @@ namespace RayTracer {
              * @param height The height of the image
              * @param scene The scene to render
              */
-            void render(std::size_t width, std::size_t height, const Scene &scene) override;
+            void render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel) override;
 
         private:
             std::string _filename;
             std::vector<std::vector<Color>> _image;
             std::size_t _linesDone;
             std::mutex _mutex;
+            std::size_t _samplesPerPixel;
             /**
              * @brief The function executed by each thread
              * @param width The width of the image
@@ -48,6 +49,6 @@ namespace RayTracer {
              * @param end The end of the lines to render
              * @return nullptr
              */
-            void *execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end);
+            void *execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end, std::size_t samplesPerPixel);
     };
 }

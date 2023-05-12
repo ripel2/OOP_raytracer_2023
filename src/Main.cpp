@@ -50,7 +50,7 @@ static int start_raytracer(char **av)
     std::unique_ptr<RayTracer::IRenderer> renderer = std::move(parser.getRenderer());
 
     try {
-        renderer->render(parser.getImageWidth(), parser.getImageHeight(), *scene);
+        renderer->render(parser.getImageWidth(), parser.getImageHeight(), *scene, parser.getSamplesPerPixel());
     } catch (const std::exception &e) {
         std::cerr << av[0] << ": " << "unknown error: " << e.what() << std::endl;
         return 84;
