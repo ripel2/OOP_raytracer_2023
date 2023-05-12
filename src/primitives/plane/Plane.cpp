@@ -28,8 +28,8 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray, RayHit &hit) const
     Math::Point<3> origin = invTransformation * (ray.getOrigin() - trPosition);
     RayTracer::Ray transformedRay(origin, direction);
     Math::Vector<3> p0l0 = (center - transformedRay.getOrigin());
-    Math::Vector<3> normal = invTransformation * Math::Vector<3>({0, 1, 0}) * getNormal();
-
+    Math::Vector<3> normal = invTransformation * getNormal();
+    
     if (std::isnan(normal[0]) || std::isnan(normal[1]) || std::isnan(normal[2]))
         return false;
 
@@ -39,6 +39,7 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray, RayHit &hit) const
         return false;
 
     double denom = normal.dot(transformedRay.getDirection());
+
     double t = normal.dot(p0l0) / denom;
 
     if (t < 0)
