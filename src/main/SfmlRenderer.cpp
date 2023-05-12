@@ -7,13 +7,15 @@
 
 #include "SfmlRenderer.hpp"
 
-RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height)
+RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height, RayTracer::Parser &parser)
 {
+    this->_parser = parser;
     this->_window.create(sf::VideoMode(width, height), "Raytracer", sf::Style::Close | sf::Style::Titlebar);
     this->_image.create(width, height, sf::Color::Black);
     this->_texture.loadFromImage(_image);
     this->_sprite.setTexture(_texture);
     this->_view = this->_window.getDefaultView();
+    this->_isOpen = true;
 }
 
 static bool isFileExisting(const std::string &filename)
@@ -53,7 +55,7 @@ void RayTracer::SfmlRenderer::event()
 
     while (_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
-            _window.close();
+            _isOpen = false;
         }
         if (event.type == sf::Event::MouseWheelMoved) {
             if (event.mouseWheel.delta > 0) {
@@ -66,7 +68,7 @@ void RayTracer::SfmlRenderer::event()
         }
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
-                _window.close();
+                _isOpen = false;
             }
             if (event.key.code == sf::Keyboard::P) {
                 _view.zoom(0.5);
@@ -119,7 +121,7 @@ void *RayTracer::SfmlRenderer::execRenderThread(std::size_t width, std::size_t h
             Color color = getColor(static_cast<double>(j) / static_cast<double>(width), 1.0 - (static_cast<double>(i) / static_cast<double>(height)), scene);
             _mutex.lock();
             event();
-            if (!_window.isOpen()) {
+            if (!_isOpen) {
                 _mutex.unlock();
                 return nullptr;
             }
@@ -127,10 +129,6 @@ void *RayTracer::SfmlRenderer::execRenderThread(std::size_t width, std::size_t h
             _mutex.unlock();
         }
         _mutex.lock();
-        if (!_window.isOpen()) {
-            _mutex.unlock();
-            return nullptr;
-        }
         renderImage();
         _mutex.unlock();
     }
@@ -160,7 +158,7 @@ void RayTracer::SfmlRenderer::loadImage(std::size_t width, std::size_t height, c
 void RayTracer::SfmlRenderer::render(std::size_t width, std::size_t height, const Scene &scene)
 {
     loadImage(width, height, scene);
-    while (_window.isOpen()) {
+    while (_isOpen != false) {
         event();
         renderImage();
     }
