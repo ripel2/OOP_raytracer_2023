@@ -60,6 +60,15 @@ void RayTracer::SfmlRenderer::event()
         if (event.type == sf::Event::Closed) {
             _window.close();
         }
+        if (event.type == sf::Event::MouseWheelMoved) {
+            if (event.mouseWheel.delta > 0) {
+                _view.zoom(0.5);
+                _window.setView(_view);
+            } else {
+                _view.zoom(1.5);
+                _window.setView(_view);
+            }
+        }
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
                 _window.close();
