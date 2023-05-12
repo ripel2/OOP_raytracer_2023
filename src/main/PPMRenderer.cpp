@@ -16,9 +16,19 @@ RayTracer::PPMRenderer::PPMRenderer(const std::string &filename)
 
 void *RayTracer::PPMRenderer::execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end)
 {
+    std::size_t subpixels = 3;
+
     for (std::size_t i = start; i < end; i++) {
         for (std::size_t j = 0; j < width; j++) {
-            Color color = getColor(static_cast<double>(j) / static_cast<double>(width), 1.0 - (static_cast<double>(i) / static_cast<double>(height)), scene);
+            Color color;
+            for (std::size_t k = 0; k < subpixels; k++) {
+                for (std::size_t l = 0; l < subpixels; l++) {
+                    double u = (j + (k / static_cast<double>(subpixels))) / width;
+                    double v = 1.0 - (i + (l / static_cast<double>(subpixels))) / height;
+                    color += getColor(u, v, scene);
+                }
+            }
+            color /= subpixels * subpixels;
             _image[i].push_back(color);
         }
         _mutex.lock();
