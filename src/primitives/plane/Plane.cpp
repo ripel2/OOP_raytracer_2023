@@ -15,6 +15,11 @@ RayTracer::Plane::Plane()
 bool RayTracer::Plane::hits(const RayTracer::Ray &ray, RayHit &hit) const
 {
     Math::Matrix transformation = getTransformation();
+    for (std::size_t i = 0; i < 3; i++) {
+        for (std::size_t j = 0; j < 3; j++) {
+            transformation(i, j) += 0.0001;
+        }
+    }
     Math::Point<3> center;
     Math::Point<3> trPosition = getPosition();
     trPosition[0] += transformation(0, 3);
@@ -62,6 +67,7 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray, RayHit &hit) const
     hit.distance = Math::Vector<3>(realPoint - ray.getOrigin()).length();
     hit.point = realPoint;
     hit.normal = normal;
+    hit.normal.normalize();
     return true;
 }
 
