@@ -65,7 +65,6 @@ void RayTracer::SfmlRenderer::event()
                 _window.close();
             }
             if (event.key.code == sf::Keyboard::P) {
-                _zoom++;
                 _view.zoom(0.5);
                 _window.setView(_view);
             }
