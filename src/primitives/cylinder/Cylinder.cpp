@@ -93,7 +93,7 @@ bool RayTracer::Cylinder::_hitsSide(const RayTracer::Ray &ray, RayHit &hit) cons
         normal = normal * -1;
     normal = invTransformation.transpose() * normal;
     normal.normalize();
-    hit.distance = Math::Vector<3>(realPoint  - ray.getOrigin()).length();
+    hit.distance = Math::Vector<3>(realPoint - ray.getOrigin()).length();
     hit.point = realPoint;
     hit.normal = normal;
     return true;
