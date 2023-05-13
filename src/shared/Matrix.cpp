@@ -372,7 +372,7 @@ Math::Vector<3> Math::Matrix::operator*(const Math::Vector<3> &vector) const
         throw std::invalid_argument("Matrix * Vector<3> : Matrix must have at least 3 columns.");
     }
     Math::Vector<4> vector4({vector[0], vector[1], vector[2], 1});
-    Math::Vector<4> result({0, 0, 0, 1});
+    Math::Vector<4> result({0, 0, 0, 0});
     for (std::size_t i = 0; i < rows; i++) {
         result[i] = 0;
         for (std::size_t j = 0; j < cols; j++) {
@@ -389,7 +389,7 @@ Math::Point<3> Math::Matrix::operator*(const Math::Point<3> &point) const
         throw std::invalid_argument("Matrix * Point<3> : Matrix must have at least 3 columns.");
     }
     Math::Vector<4> point4({point[0], point[1], point[2], 1});
-    Math::Point<4> result({0, 0, 0, 1});
+    Math::Point<4> result({0, 0, 0, 0});
     for (std::size_t i = 0; i < rows; i++) {
         result[i] = 0;
         for (std::size_t j = 0; j < cols; j++) {
