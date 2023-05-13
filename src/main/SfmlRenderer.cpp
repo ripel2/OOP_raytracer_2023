@@ -7,9 +7,8 @@
 
 #include "SfmlRenderer.hpp"
 
-RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height, RayTracer::Parser &parser)
+RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height)
 {
-    this->_parser = parser;
     this->_window.create(sf::VideoMode(width, height), "Raytracer", sf::Style::Close | sf::Style::Titlebar);
     this->_image.create(width, height, sf::Color::Black);
     this->_texture.loadFromImage(_image);

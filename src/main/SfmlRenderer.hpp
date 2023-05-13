@@ -24,12 +24,12 @@ namespace RayTracer {
              * @param width The width of the image
              * @param height The height of the image
              */
-            SfmlRenderer(size_t width, size_t height, RayTracer::Parser &parser);
+            SfmlRenderer(size_t width, size_t height);
 
             /**
              * @brief SfmlRenderer destructor
              */
-            ~SfmlRenderer() = default;
+            ~SfmlRenderer() override = default;
 
             /**
              * @brief Renders a scene
@@ -37,10 +37,9 @@ namespace RayTracer {
              * @param height The height of the image
              * @param scene The scene to render
              */
-            void render(std::size_t width, std::size_t height, const Scene &scene) override;
+            void render(std::size_t width, std::size_t height, const Scene &scene);
 
         private:
-            RayTracer::Parser &_parser;
             sf::RenderWindow _window;
             sf::Image _image;
             sf::Texture _texture;
