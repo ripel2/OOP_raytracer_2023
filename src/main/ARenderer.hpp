@@ -41,7 +41,6 @@ namespace RayTracer {
              * @param scene The scene to render
              * @return The color of the pixel
              */
-            [[nodiscard]] Color getColor(double u, double v, const Scene &scene);      
-
+            [[nodiscard]] Color getColor(double u, double v, const Scene &scene);
     };
 }
