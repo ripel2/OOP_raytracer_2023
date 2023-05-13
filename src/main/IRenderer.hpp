@@ -23,6 +23,6 @@ namespace RayTracer {
              * @param height The height of the image
              * @param scene The scene to render
              */
-            virtual void render(std::size_t width, std::size_t height, const Scene &scene) = 0;
+            virtual void render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel) = 0;
     };
 }

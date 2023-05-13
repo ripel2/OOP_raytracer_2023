@@ -7,3 +7,6 @@ raytracer
 build/
 plugins/
 screenshots/
+*.gc*
+unit_tests
+tests/unit_tests

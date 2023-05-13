@@ -126,6 +126,15 @@ void RayTracer::Parser::_parseCamera(const libconfig::Setting &root)
     _scene->setCamera(cameraPtr);
 }
 
+static bool isPerfectSquare(int n)
+{
+    if (n > 0) {
+        long long root = sqrt(n);
+        return (n == root * root);
+    }
+    return false;
+}
+
 void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
 {
     const libconfig::Setting &renderer = root["renderer"];
@@ -143,6 +152,18 @@ void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
     _imageWidth = _getInt(renderer["width"]);
     _imageHeight = _getInt(renderer["height"]);
 
+    if (renderer.exists("samplesPerPixel")) {
+        if (renderer["samplesPerPixel"].isNumber()) {
+            _samplesPerPixel = _getInt(renderer["samplesPerPixel"]);
+            if (!isPerfectSquare(_samplesPerPixel)) {
+                throw RayTracer::ParserError("Samples per pixel must be a perfect square");
+            }
+        } else {
+            throw RayTracer::ParserError("Samples per pixel must be a number");
+        }
+    } else {
+        _samplesPerPixel = 1;
+    }
     if (lowerType == "ppmrenderer") {
         _renderer = std::make_unique<RayTracer::PPMRenderer>(renderer["filename"]);
     } else if (lowerType == "sfmlrenderer") {
@@ -206,7 +227,7 @@ void RayTracer::Parser::_parseLight(const libconfig::Setting &setting)
     
     RayTracer::LightBuilder builder(light.get());
     std::string colors[] = {"color"};
-    std::string doubles[] = {"intensity", "shadow_ray_offset", "shadowRayOffset"};
+    std::string doubles[] = {"intensity", "shadow_ray_offset", "shadowRayOffset", "shadowRayBias", "shadow_ray_bias"};
     std::string points[] = {"position"};
     std::string vectors[] = {"direction"};
     std::string ints[] = {"shadowRayCount", "shadow_ray_count"};
@@ -302,4 +323,9 @@ void RayTracer::Parser::_parseObject(const libconfig::Setting &setting)
     if (!setting.exists("material"))
         throw RayTracer::ParserError("Object must have a material");
     _scene->addObject(object);
+}
+
+std::size_t RayTracer::Parser::getSamplesPerPixel() const
+{
+    return _samplesPerPixel;
 }

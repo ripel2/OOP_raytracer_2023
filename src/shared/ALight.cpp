@@ -83,3 +83,15 @@ void RayTracer::ALight::setShadowRayCount(int shadowRayCount) noexcept
     std::cerr << "Warning : Called ALight::setShadowRayCount() function from abstract" << std::endl;
     (void)shadowRayCount;
 }
+
+double RayTracer::ALight::getShadowRayBias() const noexcept
+{
+    std::cerr << "Warning : Called ALight::getShadowRayBias() function from abstract" << std::endl;
+    return 0;
+}
+
+void RayTracer::ALight::setShadowRayBias(double shadowRayBias) noexcept
+{
+    std::cerr << "Warning : Called ALight::setShadowRayBias() function from abstract" << std::endl;
+    (void)shadowRayBias;
+}

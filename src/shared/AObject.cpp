@@ -46,15 +46,17 @@ const Math::Matrix &RayTracer::AObject::getRotation() const noexcept
 
 void RayTracer::AObject::setRotation(const Math::Vector<3> &rotation) noexcept
 {
-    _rotation(0, 0) = cos(rotation[1]) * cos(rotation[2]);
-    _rotation(0, 1) = cos(rotation[2]) * sin(rotation[0]) * sin(rotation[1]) - cos(rotation[0]) * sin(rotation[2]);
-    _rotation(0, 2) = cos(rotation[0]) * cos(rotation[2]) * sin(rotation[1]) + sin(rotation[0]) * sin(rotation[2]);
-    _rotation(1, 0) = cos(rotation[1]) * sin(rotation[2]);
-    _rotation(1, 1) = cos(rotation[0]) * cos(rotation[2]) + sin(rotation[0]) * sin(rotation[1]) * sin(rotation[2]);
-    _rotation(1, 2) = -cos(rotation[2]) * sin(rotation[0]) + cos(rotation[0]) * sin(rotation[1]) * sin(rotation[2]);
-    _rotation(2, 0) = -sin(rotation[1]);
-    _rotation(2, 1) = cos(rotation[1]) * sin(rotation[0]);
-    _rotation(2, 2) = cos(rotation[0]) * cos(rotation[1]);
+    Math::Vector<3> radRotation = rotation * (M_PI / 180);
+
+    _rotation(0, 0) = cos(radRotation[1]) * cos(radRotation[2]);
+    _rotation(0, 1) = cos(radRotation[2]) * sin(radRotation[0]) * sin(radRotation[1]) - cos(radRotation[0]) * sin(radRotation[2]);
+    _rotation(0, 2) = cos(radRotation[0]) * cos(radRotation[2]) * sin(radRotation[1]) + sin(radRotation[0]) * sin(radRotation[2]);
+    _rotation(1, 0) = cos(radRotation[1]) * sin(radRotation[2]);
+    _rotation(1, 1) = cos(radRotation[0]) * cos(radRotation[2]) + sin(radRotation[0]) * sin(radRotation[1]) * sin(radRotation[2]);
+    _rotation(1, 2) = -cos(radRotation[2]) * sin(radRotation[0]) + cos(radRotation[0]) * sin(radRotation[1]) * sin(radRotation[2]);
+    _rotation(2, 0) = -sin(radRotation[1]);
+    _rotation(2, 1) = cos(radRotation[1]) * sin(radRotation[0]);
+    _rotation(2, 2) = cos(radRotation[0]) * cos(radRotation[1]);
 }
 
 const Math::Matrix &RayTracer::AObject::getScale() const noexcept

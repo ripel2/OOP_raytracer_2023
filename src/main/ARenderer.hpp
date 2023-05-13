@@ -31,7 +31,7 @@ namespace RayTracer {
              * @param height The height of the image
              * @param scene The scene to render
              */
-            virtual void render(std::size_t width, std::size_t height, const Scene &scene) = 0;
+            virtual void render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel) = 0;
 
         protected:
             /**
@@ -41,6 +41,7 @@ namespace RayTracer {
              * @param scene The scene to render
              * @return The color of the pixel
              */
-            [[nodiscard]] Color getColor(double u, double v, const Scene &scene);
+            [[nodiscard]] Color getColor(double u, double v, const Scene &scene);      
+
     };
 }

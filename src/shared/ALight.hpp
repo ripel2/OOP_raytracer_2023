@@ -119,6 +119,22 @@ namespace RayTracer {
             */
             virtual void setShadowRayCount(int shadowRayCount) noexcept;
 
+            /**
+             * @brief Get the shadow ray bias of the light
+             * @return The shadow ray bias of the light
+             * @note The shadow ray bias is an offset to add to the hit point to avoid self shadowing and
+             * shadow acne
+            */
+            virtual double getShadowRayBias() const noexcept;
+
+            /**
+             * @brief Set the shadow ray bias of the light
+             * @param shadowRayBias The shadow ray bias to set
+             * @note The shadow ray bias is an offset to add to the hit point to avoid self shadowing and
+             * shadow acne
+            */
+            virtual void setShadowRayBias(double shadowRayBias) noexcept;
+
         protected:
             double _intensity;
     };

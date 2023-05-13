@@ -20,6 +20,8 @@ void RayTracer::LightBuilder::set(const std::string &name, const double &value)
         _light->setIntensity(value);
     else if (name == "shadowRayOffset" || name == "shadow_ray_offset")
         _light->setShadowRayOffset(value);
+    else if (name == "shadowRayBias" || name == "shadow_ray_bias")
+        _light->setShadowRayBias(value);
     else
         throw RayTracer::BuilderError("LightBuilder: " + name + " is not a valid setter or doesn't take a double");
 }
