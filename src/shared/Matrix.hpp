@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 
+
 #include "Point.hpp"
 #include "Vector.hpp"
 
@@ -59,6 +60,7 @@ namespace Math {
             Matrix operator+(const Matrix &other);
 
             Matrix &operator+=(const Matrix &other);
+
             Matrix operator-(const Matrix &other) const;
             Matrix &operator-=(const Matrix &other);
             Matrix operator*(const Matrix &other) const;

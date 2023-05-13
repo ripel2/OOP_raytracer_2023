@@ -9,6 +9,7 @@
 
 RayTracer::Color RayTracer::ARenderer::getColor(double u, double v, const RayTracer::Scene &scene)
 {
+
     const RayTracer::Camera *camera = scene.getCamera();
     RayTracer::Ray ray = camera->getRay(u, v);
     IObject *closest = nullptr;

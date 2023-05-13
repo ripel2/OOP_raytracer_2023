@@ -136,6 +136,7 @@ Math::Matrix &Math::Matrix::operator-=(const Math::Matrix &other)
     return *this;
 }
 
+
 Math::Matrix Math::Matrix::operator*(const Math::Matrix &other) const
 {
     if (this->cols != other.rows) {
@@ -170,6 +171,7 @@ Math::Matrix &Math::Matrix::operator*=(const Math::Matrix &other)
     return *this;
 }
 
+
 Math::Matrix Math::Matrix::operator*(double scalar) const
 {
     Math::Matrix result(this->rows, this->cols);
@@ -190,6 +192,7 @@ Math::Matrix &Math::Matrix::operator*=(double scalar)
     }
     return *this;
 }
+
 
 Math::Matrix Math::Matrix::operator/(double scalar) const
 {
@@ -220,6 +223,7 @@ Math::Matrix &Math::Matrix::operator=(const Math::Matrix &other)
     if (this != &other) {
         this->rows = other.rows;
         this->cols = other.cols;
+
         for (std::size_t i = 0; i < rows; i++) {
             for (std::size_t j = 0; j < cols; j++) {
                 this->_matrix[i][j] = other._matrix[i][j];
@@ -364,6 +368,7 @@ std::ostream &operator<<(std::ostream &os, const Math::Matrix &matrix)
         os << std::endl;
     }
     return os;
+
 }
 
 Math::Vector<3> Math::Matrix::operator*(const Math::Vector<3> &vector) const

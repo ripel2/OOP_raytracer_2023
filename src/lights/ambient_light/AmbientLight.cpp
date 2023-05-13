@@ -14,6 +14,7 @@ RayTracer::AmbientLight::AmbientLight()
 }
 
 RayTracer::Color RayTracer::AmbientLight::applyLight(const RayTracer::Color &pixel, const Ray &ray,
+
 const RayHit &hit, const std::vector<RayTracer::IObject *> &objects) const
 {
     (void)ray;

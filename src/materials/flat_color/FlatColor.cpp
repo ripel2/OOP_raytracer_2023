@@ -7,6 +7,7 @@
 
 #include "FlatColor.hpp"
 
+
 RayTracer::FlatColor::FlatColor()
     : _color()
 {
