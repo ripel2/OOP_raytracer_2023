@@ -47,6 +47,9 @@ void RayTracer::Parser::parse(const std::string &path)
         _parseMaterials(*root);
         _parseLights(*root);
         _parseObjects(*root);
+        _isFileParsedChanged = false;
+        _fileParsed = path;
+        _fileLastModificationDate = _getFileLastModificationDate();
     } catch (const RayTracer::ParserError &e) {
         throw e;
     } catch (const libconfig::SettingNotFoundException &nfex) {
@@ -98,6 +101,23 @@ int RayTracer::Parser::_getInt(const libconfig::Setting &setting) const
     return setting;
 }
 
+std::string RayTracer::Parser::_getFileLastModificationDate()
+{
+    struct std::stat result;
+    int ret = stat(_path.c_str(), &result);
+
+    if (ret == -1)
+        throw RayTracer::ParserError("Cannot get file last modification date");
+    return result.st_mtime.to_string();
+}
+
+void RayTracer::Parser::_checkFileParsedChanged()
+{
+    if (_fileLastModificationDate != _getFileLastModificationDate()) {
+        this->parse(_fileParsed);
+    }
+}
+
 void RayTracer::Parser::_parseCamera(const libconfig::Setting &root)
 {
     const libconfig::Setting &camera = root["camera"];
@@ -126,15 +146,6 @@ void RayTracer::Parser::_parseCamera(const libconfig::Setting &root)
     _scene->setCamera(cameraPtr);
 }
 
-static bool isPerfectSquare(int n)
-{
-    if (n > 0) {
-        long long root = sqrt(n);
-        return (n == root * root);
-    }
-    return false;
-}
-
 void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
 {
     const libconfig::Setting &renderer = root["renderer"];
@@ -152,18 +163,6 @@ void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
     _imageWidth = _getInt(renderer["width"]);
     _imageHeight = _getInt(renderer["height"]);
 
-    if (renderer.exists("samplesPerPixel")) {
-        if (renderer["samplesPerPixel"].isNumber()) {
-            _samplesPerPixel = _getInt(renderer["samplesPerPixel"]);
-            if (!isPerfectSquare(_samplesPerPixel)) {
-                throw RayTracer::ParserError("Samples per pixel must be a perfect square");
-            }
-        } else {
-            throw RayTracer::ParserError("Samples per pixel must be a number");
-        }
-    } else {
-        _samplesPerPixel = 1;
-    }
     if (lowerType == "ppmrenderer") {
         _renderer = std::make_unique<RayTracer::PPMRenderer>(renderer["filename"]);
     } else {
@@ -222,7 +221,7 @@ void RayTracer::Parser::_parseLights(const libconfig::Setting &root)
 void RayTracer::Parser::_parseLight(const libconfig::Setting &setting)
 {
     std::unique_ptr<RayTracer::ILight> light = _loader->getLightFactory().createInstance(setting["type"]);
-    
+
     RayTracer::LightBuilder builder(light.get());
     std::string colors[] = {"color"};
     std::string doubles[] = {"intensity", "shadow_ray_offset", "shadowRayOffset", "shadowRayBias", "shadow_ray_bias"};
@@ -321,9 +320,4 @@ void RayTracer::Parser::_parseObject(const libconfig::Setting &setting)
     if (!setting.exists("material"))
         throw RayTracer::ParserError("Object must have a material");
     _scene->addObject(object);
-}
-
-std::size_t RayTracer::Parser::getSamplesPerPixel() const
-{
-    return _samplesPerPixel;
 }

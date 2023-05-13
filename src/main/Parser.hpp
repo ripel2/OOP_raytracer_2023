@@ -8,6 +8,7 @@
 #pragma once
 
 #include <libconfig.h++>
+#include <sys/stat.h>
 
 #include "PluginLoader.hpp"
 #include "Errors.hpp"
@@ -22,10 +23,12 @@ namespace RayTracer {
             PluginLoader *_loader;
             std::size_t _imageWidth;
             std::size_t _imageHeight;
-            std::size_t _samplesPerPixel;
             std::unique_ptr<Scene> _scene;
             std::unique_ptr<IRenderer> _renderer;
             std::map<std::string, std::shared_ptr<IMaterial>> _materials;
+            std::string _fileParsed;
+            std::string _fileLastModificationDate;
+            bool _isFileParsedChanged;
 
             /**
              * @brief Parse the camera section
@@ -91,6 +94,17 @@ namespace RayTracer {
             */
             int _getInt(const libconfig::Setting &setting) const;
 
+            /**
+             * @brief Get the date of the last modification of a file
+             * @return The date of the last modification of a file
+            */
+           std::string _getFileLastModificationDate();
+
+            /**
+             * @brief Check if file parsed has changed
+             */
+            void _checkFileParsedChanged();
+
         public:
             /**
              * @brief Construct a new Parser object
@@ -132,11 +146,5 @@ namespace RayTracer {
              * @return The renderer
              */
             std::unique_ptr<IRenderer> getRenderer();
-
-            /**
-             * @brief Get the samples per pixel
-             * @return The samples per pixel
-             */
-            std::size_t getSamplesPerPixel() const;
     };
 }
