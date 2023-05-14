@@ -12,7 +12,7 @@
 #include "ObjectBuilder.hpp"
 
 RayTracer::Parser::Parser(RayTracer::PluginLoader *loader)
-    : _loader(loader), _imageWidth(0), _imageHeight(0), _scene(nullptr), _renderer(nullptr), _materials()
+    : _loader(loader), _imageWidth(0), _imageHeight(0), _samplesPerPixel(1), _maxDepth(0), _scene(nullptr), _renderer(nullptr), _materials()
 {
 }
 
@@ -146,6 +146,15 @@ void RayTracer::Parser::_parseCamera(const libconfig::Setting &root)
     _scene->setCamera(cameraPtr);
 }
 
+static bool isPerfectSquare(int n)
+{
+    if (n > 0) {
+        long long root = sqrt(n);
+        return (n == root * root);
+    }
+    return false;
+}
+
 void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
 {
     const libconfig::Setting &renderer = root["renderer"];
@@ -163,6 +172,23 @@ void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
     _imageWidth = _getInt(renderer["width"]);
     _imageHeight = _getInt(renderer["height"]);
 
+    if (renderer.exists("samplesPerPixel")) {
+        if (renderer["samplesPerPixel"].isNumber()) {
+            _samplesPerPixel = _getInt(renderer["samplesPerPixel"]);
+            if (!isPerfectSquare(_samplesPerPixel)) {
+                throw RayTracer::ParserError("Samples per pixel must be a perfect square");
+            }
+        } else {
+            throw RayTracer::ParserError("Samples per pixel must be a number");
+        }
+    }
+    if (renderer.exists("maxDepth")) {
+        if (renderer["maxDepth"].isNumber()) {
+            _maxDepth = _getInt(renderer["maxDepth"]);
+        } else {
+            throw RayTracer::ParserError("Max depth must be a number");
+        }
+    }
     if (lowerType == "ppmrenderer") {
         _renderer = std::make_unique<RayTracer::PPMRenderer>(renderer["filename"]);
     } else if (lowerType == "sfmlrenderer") {
@@ -327,4 +353,9 @@ void RayTracer::Parser::_parseObject(const libconfig::Setting &setting)
 std::size_t RayTracer::Parser::getSamplesPerPixel() const
 {
     return _samplesPerPixel;
+}
+
+std::size_t RayTracer::Parser::getMaxDepth() const
+{
+    return _maxDepth;
 }

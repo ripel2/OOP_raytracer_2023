@@ -28,6 +28,7 @@ namespace RayTracer {
             std::size_t _imageWidth;
             std::size_t _imageHeight;
             std::size_t _samplesPerPixel;
+            std::size_t _maxDepth;
             std::unique_ptr<Scene> _scene;
             std::unique_ptr<IRenderer> _renderer;
             std::map<std::string, std::shared_ptr<IMaterial>> _materials;
@@ -157,5 +158,11 @@ namespace RayTracer {
              * @return The samples per pixel
              */
             std::size_t getSamplesPerPixel() const;
+
+            /**
+             * @brief Get the max depth of the rays being casted recursively
+             * @return The max depth
+            */
+            std::size_t getMaxDepth() const;
     };
 }
