@@ -166,7 +166,7 @@ void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
     if (lowerType == "ppmrenderer") {
         _renderer = std::make_unique<RayTracer::PPMRenderer>(renderer["filename"]);
     } else if (lowerType == "sfmlrenderer") {
-        _renderer = std::make_unique<RayTracer::SfmlRenderer>(_imageWidth, _imageHeight);
+        _renderer = std::make_unique<RayTracer::SfmlRenderer>(_imageWidth, _imageHeight, this);
     } else {
         throw RayTracer::ParserError("Unknown renderer type: " + renderer["type"]);
     }
