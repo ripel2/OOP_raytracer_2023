@@ -150,6 +150,7 @@ namespace RayTracer {
              * @note Used for torus
             */
             virtual void setInnerRadius(double innerRadius) noexcept;
+
         protected:
             /**
              * @brief Get the transformation matrix of the object

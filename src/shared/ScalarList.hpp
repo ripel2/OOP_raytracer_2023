@@ -15,6 +15,7 @@ namespace Math {
     template<std::size_t N>
     class ScalarList {
         protected:
+
             /**
              * @brief ScalarList constructor
              */

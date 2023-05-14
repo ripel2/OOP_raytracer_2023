@@ -20,6 +20,8 @@ target_include_directories(raytracer PUBLIC ${LIBCONFIG_INCLUDE_DIRS})
 
 target_link_libraries(raytracer dl)
 target_link_libraries(raytracer pthread)
+target_link_libraries(raytracer sfml-graphics sfml-window sfml-system)
+
 
 target_include_directories(raytracer PUBLIC src/shared)
 target_include_directories(raytracer PUBLIC src/main)
@@ -30,6 +32,7 @@ set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES ${PROJECT_SOURCE
 add_subdirectory(src/primitives/sphere)
 add_subdirectory(src/primitives/plane)
 add_subdirectory(src/primitives/cylinder)
+add_subdirectory(src/primitives/cone)
 add_subdirectory(src/materials/flat_color)
 add_subdirectory(src/lights/directional_light)
 add_subdirectory(src/lights/ambient_light)

@@ -16,6 +16,7 @@
 #include "Camera.hpp"
 #include "ARenderer.hpp"
 #include "PPMRenderer.hpp"
+#include "SfmlRenderer.hpp"
 
 namespace RayTracer {
     class Parser {

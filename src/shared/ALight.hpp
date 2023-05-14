@@ -28,6 +28,7 @@ namespace RayTracer {
              * @param hit The hit information
             */
             virtual Color applyLight(const Color &pixel, const Ray &ray,
+
             const RayHit &hit, const std::vector<RayTracer::IObject *> &objects) const = 0;
 
             /**

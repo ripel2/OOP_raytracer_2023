@@ -14,6 +14,7 @@ RayTracer::DirectionalLight::DirectionalLight()
 }
 
 RayTracer::Color RayTracer::DirectionalLight::applyLight(const RayTracer::Color &pixel, const Ray &ray,
+
 const RayHit &hit, const std::vector<RayTracer::IObject *> &objects) const
 {
     Math::Vector<3> lightDir = _direction;

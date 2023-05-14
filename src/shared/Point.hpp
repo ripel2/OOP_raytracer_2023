@@ -17,6 +17,7 @@ namespace Math {
     template<std::size_t N>
     class Point : public ScalarList<N> {
         public:
+
             /**
              * @brief Point constructor
              */
