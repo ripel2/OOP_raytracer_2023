@@ -33,7 +33,7 @@ To generate an image, the program traces rays from the camera's eye and follows 
 <hr>
 
 ### # Here is an example of a scene :
-<img src="docs/exemple.png" alt="Example" width="960" height="540">
+<img src="docs/colored_lights.png" alt="Example" width="960" height="540">
 
 <hr>
 
