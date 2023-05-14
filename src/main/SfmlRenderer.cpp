@@ -8,6 +8,7 @@
 #include "SfmlRenderer.hpp"
 
 RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height, RayTracer::Parser &parser)
+    : _parser(parser)
 {
     this->_window.create(sf::VideoMode(width, height), "Raytracer", sf::Style::Close | sf::Style::Titlebar);
     this->_image.create(width, height, sf::Color::Black);
@@ -15,7 +16,6 @@ RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height, RayTracer::Pa
     this->_sprite.setTexture(_texture);
     this->_view = this->_window.getDefaultView();
     this->_isOpen = true;
-    this->_parser = &parser;
 }
 
 static bool isFileExisting(const std::string &filename)
