@@ -9,6 +9,9 @@
 
 #include <libconfig.h++>
 #include <sys/stat.h>
+#include <iostream>
+#include <ctime>
+#include <cstdio>
 
 #include "PluginLoader.hpp"
 #include "Errors.hpp"
@@ -24,6 +27,7 @@ namespace RayTracer {
             PluginLoader *_loader;
             std::size_t _imageWidth;
             std::size_t _imageHeight;
+            std::size_t _samplesPerPixel;
             std::unique_ptr<Scene> _scene;
             std::unique_ptr<IRenderer> _renderer;
             std::map<std::string, std::shared_ptr<IMaterial>> _materials;
@@ -147,5 +151,11 @@ namespace RayTracer {
              * @return The renderer
              */
             std::unique_ptr<IRenderer> getRenderer();
+
+            /**
+             * @brief Get the samples per pixel
+             * @return The samples per pixel
+             */
+            std::size_t getSamplesPerPixel() const;
     };
 }

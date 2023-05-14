@@ -103,12 +103,12 @@ int RayTracer::Parser::_getInt(const libconfig::Setting &setting) const
 
 std::string RayTracer::Parser::_getFileLastModificationDate()
 {
-    struct std::stat result;
-    int ret = stat(_path.c_str(), &result);
+    struct stat result;
+    int ret = stat(_fileParsed.c_str(), &result);
 
     if (ret == -1)
         throw RayTracer::ParserError("Cannot get file last modification date");
-    return result.st_mtime.to_string();
+    return std::to_string(result.st_mtime);
 }
 
 void RayTracer::Parser::_checkFileParsedChanged()
@@ -322,4 +322,9 @@ void RayTracer::Parser::_parseObject(const libconfig::Setting &setting)
     if (!setting.exists("material"))
         throw RayTracer::ParserError("Object must have a material");
     _scene->addObject(object);
+}
+
+std::size_t RayTracer::Parser::getSamplesPerPixel() const
+{
+    return _samplesPerPixel;
 }
