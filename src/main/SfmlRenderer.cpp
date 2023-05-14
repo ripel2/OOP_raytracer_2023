@@ -7,7 +7,8 @@
 
 #include "SfmlRenderer.hpp"
 
-RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height)
+RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height, RayTracer::Parser &parser)
+    : _parser(parser)
 {
     this->_window.create(sf::VideoMode(width, height), "Raytracer", sf::Style::Close | sf::Style::Titlebar);
     this->_image.create(width, height, sf::Color::Black);
@@ -15,6 +16,7 @@ RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height)
     this->_sprite.setTexture(_texture);
     this->_view = this->_window.getDefaultView();
     this->_isOpen = true;
+    this->_window.setView(_view);
 }
 
 static bool isFileExisting(const std::string &filename)
@@ -164,8 +166,33 @@ void RayTracer::SfmlRenderer::loadImage(std::size_t width, std::size_t height, c
 
 void RayTracer::SfmlRenderer::render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel, std::size_t depth)
 {
+    bool isChanged = false;
+
     loadImage(width, height, scene, samplesPerPixel, depth);
     while (_isOpen != false) {
+        try {
+            isChanged = _parser.isFileChanged();
+        } catch (const RayTracer::ParserError &e) {
+            std::cerr << _parser.getFilePath() << ": " << "parser error: " << e.what() << std::endl;
+            break;
+        }
+        if (isChanged) {
+            std::string filePath = _parser.getFilePath();
+            try {
+                _parser.parse(filePath, false);
+            } catch (const RayTracer::ParserError &e) {
+                std::cerr << filePath << ": " << "parser error: " << e.what() << std::endl;
+                break;
+            } catch (const RayTracer::BuilderError &e) {
+                std::cerr << filePath << ": " << "builder error: " << e.what() << std::endl;
+                break;
+            } catch (const std::exception &e) {
+                std::cerr << filePath << ": " << "unknown error: " << e.what() << std::endl;
+                break;
+            }
+            std::unique_ptr<RayTracer::Scene> newScene = std::move(_parser.getScene());
+            loadImage(width, height, *newScene, samplesPerPixel, depth);
+        }
         event();
         renderImage();
     }

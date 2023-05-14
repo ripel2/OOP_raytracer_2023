@@ -15,8 +15,10 @@
 #include <sys/stat.h>
 
 #include "ARenderer.hpp"
+#include "Parser.hpp"
 
 namespace RayTracer {
+    class Parser;
     class SfmlRenderer : public ARenderer {
         public:
             /**
@@ -24,7 +26,7 @@ namespace RayTracer {
              * @param width The width of the image
              * @param height The height of the image
              */
-            SfmlRenderer(size_t width, size_t height);
+            SfmlRenderer(size_t width, size_t height, RayTracer::Parser &parser);
 
             /**
              * @brief SfmlRenderer destructor
@@ -47,6 +49,7 @@ namespace RayTracer {
             sf::View _view;
             std::mutex _mutex;
             bool _isOpen;
+            RayTracer::Parser &_parser;
 
             /**
              * @brief Handles events

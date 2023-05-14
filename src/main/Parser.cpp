@@ -5,11 +5,10 @@
 ** Parser
 */
 
-#include "Parser.hpp"
-
 #include "MaterialBuilder.hpp"
 #include "LightBuilder.hpp"
 #include "ObjectBuilder.hpp"
+#include "Parser.hpp"
 
 RayTracer::Parser::Parser(RayTracer::PluginLoader *loader)
     : _loader(loader), _imageWidth(0), _imageHeight(0), _samplesPerPixel(1), _maxDepth(0), _scene(nullptr), _renderer(nullptr), _materials()
@@ -24,7 +23,7 @@ RayTracer::Parser::~Parser()
         _renderer.reset();
 }
 
-void RayTracer::Parser::parse(const std::string &path)
+void RayTracer::Parser::parse(const std::string &path, bool isStartup)
 {
     libconfig::Config cfg;
     libconfig::Setting *root;
@@ -41,12 +40,15 @@ void RayTracer::Parser::parse(const std::string &path)
     }
     try {
         _scene = std::make_unique<RayTracer::Scene>();
-
         _parseCamera(*root);
-        _parseRenderer(*root);
+        if (isStartup) {
+            _parseRenderer(*root);
+        }
         _parseMaterials(*root);
         _parseLights(*root);
         _parseObjects(*root);
+        _latestFileStat = _getFileStat(path);
+        _filePath = path;
     } catch (const RayTracer::ParserError &e) {
         throw e;
     } catch (const libconfig::SettingNotFoundException &nfex) {
@@ -172,7 +174,7 @@ void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
     if (lowerType == "ppmrenderer") {
         _renderer = std::make_unique<RayTracer::PPMRenderer>(renderer["filename"]);
     } else if (lowerType == "sfmlrenderer") {
-        _renderer = std::make_unique<RayTracer::SfmlRenderer>(_imageWidth, _imageHeight);
+        _renderer = std::make_unique<RayTracer::SfmlRenderer>(_imageWidth, _imageHeight, *this);
     } else {
         throw RayTracer::ParserError("Unknown renderer type: " + renderer["type"]);
     }
@@ -229,7 +231,7 @@ void RayTracer::Parser::_parseLights(const libconfig::Setting &root)
 void RayTracer::Parser::_parseLight(const libconfig::Setting &setting)
 {
     std::unique_ptr<RayTracer::ILight> light = _loader->getLightFactory().createInstance(setting["type"]);
-    
+
     RayTracer::LightBuilder builder(light.get());
     std::string colors[] = {"color"};
     std::string doubles[] = {"intensity", "shadow_ray_offset", "shadowRayOffset", "shadowRayBias", "shadow_ray_bias"};
@@ -338,4 +340,27 @@ std::size_t RayTracer::Parser::getSamplesPerPixel() const
 std::size_t RayTracer::Parser::getMaxDepth() const
 {
     return _maxDepth;
+}
+
+struct stat RayTracer::Parser::_getFileStat(const std::string &path) const
+{
+    struct stat buffer;
+    if (stat(path.c_str(), &buffer) != 0)
+        throw RayTracer::ParserError("File " + path + " does not exist");
+    return buffer;
+}
+
+bool RayTracer::Parser::isFileChanged()
+{
+    struct stat buffer = _getFileStat(_filePath);
+
+    if (buffer.st_mtime != _latestFileStat.st_mtime) {
+        return true;
+    }
+    return false;
+}
+
+std::string RayTracer::Parser::getFilePath() const
+{
+    return _filePath;
 }
