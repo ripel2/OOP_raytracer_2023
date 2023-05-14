@@ -32,7 +32,7 @@ namespace RayTracer {
              * @param height The height of the image
              * @param scene The scene to render
              */
-            void render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel) override;
+            void render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel, std::size_t depth) override;
 
         private:
             std::string _filename;
@@ -49,6 +49,6 @@ namespace RayTracer {
              * @param end The end of the lines to render
              * @return nullptr
              */
-            void *execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end, std::size_t samplesPerPixel);
+            void *execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end, std::size_t samplesPerPixel, std::size_t depth);
     };
 }

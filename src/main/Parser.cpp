@@ -12,7 +12,7 @@
 #include "ObjectBuilder.hpp"
 
 RayTracer::Parser::Parser(RayTracer::PluginLoader *loader)
-    : _loader(loader), _imageWidth(0), _imageHeight(0), _scene(nullptr), _renderer(nullptr), _materials()
+    : _loader(loader), _imageWidth(0), _imageHeight(0), _samplesPerPixel(1), _maxDepth(0), _scene(nullptr), _renderer(nullptr), _materials()
 {
 }
 
@@ -161,8 +161,13 @@ void RayTracer::Parser::_parseRenderer(const libconfig::Setting &root)
         } else {
             throw RayTracer::ParserError("Samples per pixel must be a number");
         }
-    } else {
-        _samplesPerPixel = 1;
+    }
+    if (renderer.exists("maxDepth")) {
+        if (renderer["maxDepth"].isNumber()) {
+            _maxDepth = _getInt(renderer["maxDepth"]);
+        } else {
+            throw RayTracer::ParserError("Max depth must be a number");
+        }
     }
     if (lowerType == "ppmrenderer") {
         _renderer = std::make_unique<RayTracer::PPMRenderer>(renderer["filename"]);
@@ -328,4 +333,9 @@ void RayTracer::Parser::_parseObject(const libconfig::Setting &setting)
 std::size_t RayTracer::Parser::getSamplesPerPixel() const
 {
     return _samplesPerPixel;
+}
+
+std::size_t RayTracer::Parser::getMaxDepth() const
+{
+    return _maxDepth;
 }
