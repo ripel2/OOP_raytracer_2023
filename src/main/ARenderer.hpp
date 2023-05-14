@@ -19,7 +19,7 @@ namespace RayTracer {
             /**
              * @brief ARenderer constructor
              */
-            ARenderer() = default;
+            ARenderer();
             /**
              * @brief ARenderer destructor
              */
@@ -31,7 +31,7 @@ namespace RayTracer {
              * @param height The height of the image
              * @param scene The scene to render
              */
-            virtual void render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel) = 0;
+            virtual void render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel, std::size_t depth) = 0;
 
         protected:
             /**
@@ -41,6 +41,23 @@ namespace RayTracer {
              * @param scene The scene to render
              * @return The color of the pixel
              */
-            [[nodiscard]] Color getColor(double u, double v, const Scene &scene);
+            [[nodiscard]] Color getColor(double u, double v, const Scene &scene, std::size_t depth);
+
+            /**
+             * @brief Gets the color of a pixel
+             * @param ray The ray to cast
+             * @param scene The scene to render
+             * @return The color of the pixel
+             */
+            [[nodiscard]] Color getColor(const Ray &ray, const Scene &scene, std::size_t depth, IObject *lastObject = nullptr);
+        
+        private:
+            std::size_t _seed;
+
+            /**
+             * @brief Gets a random point in a unit sphere
+             * @return The random point
+            */
+            Math::Vector<3> randomInUnitSphere();
     };
 }

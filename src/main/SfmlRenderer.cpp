@@ -113,7 +113,7 @@ void RayTracer::SfmlRenderer::renderImage()
     _window.display();
 }
 
-void *RayTracer::SfmlRenderer::execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end, std::size_t samplesPerPixel)
+void *RayTracer::SfmlRenderer::execRenderThread(std::size_t width, std::size_t height, const Scene &scene, std::size_t start, std::size_t end, std::size_t samplesPerPixel, std::size_t depth)
 {
     for (std::size_t i = start; i < end; i++) {
         for (std::size_t j = 0 ; j < width; j++) {
@@ -122,7 +122,7 @@ void *RayTracer::SfmlRenderer::execRenderThread(std::size_t width, std::size_t h
                 for (std::size_t l = 0; l < samplesPerPixel; l++) {
                     double u = (j + (k / static_cast<double>(samplesPerPixel))) / width;
                     double v = 1.0 - (i + (l / static_cast<double>(samplesPerPixel))) / height;
-                    color += getColor(u, v, scene);
+                    color += getColor(u, v, scene, depth);
                 }
             }
             color /= samplesPerPixel * samplesPerPixel;
@@ -142,7 +142,7 @@ void *RayTracer::SfmlRenderer::execRenderThread(std::size_t width, std::size_t h
     return nullptr;
 }
 
-void RayTracer::SfmlRenderer::loadImage(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel)
+void RayTracer::SfmlRenderer::loadImage(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel, std::size_t depth)
 {
     std::vector<std::thread> threads;
     std::size_t thread_nb = 1;
@@ -155,16 +155,16 @@ void RayTracer::SfmlRenderer::loadImage(std::size_t width, std::size_t height, c
     }
     linesPerThread = height / thread_nb;
     for (std::size_t i = 0; i < thread_nb; i++) {
-        threads.emplace_back(&RayTracer::SfmlRenderer::execRenderThread, this, width, height, std::ref(scene), i * linesPerThread, (i + 1) * linesPerThread, samplesPerPixel);
+        threads.emplace_back(&RayTracer::SfmlRenderer::execRenderThread, this, width, height, std::ref(scene), i * linesPerThread, (i + 1) * linesPerThread, samplesPerPixel, depth);
     }
     for (auto &thread : threads) {
         thread.join();
     }
 }
 
-void RayTracer::SfmlRenderer::render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel)
+void RayTracer::SfmlRenderer::render(std::size_t width, std::size_t height, const Scene &scene, std::size_t samplesPerPixel, std::size_t depth)
 {
-    loadImage(width, height, scene, samplesPerPixel);
+    loadImage(width, height, scene, samplesPerPixel, depth);
     while (_isOpen != false) {
         event();
         renderImage();

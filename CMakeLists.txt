@@ -22,7 +22,6 @@ target_link_libraries(raytracer dl)
 target_link_libraries(raytracer pthread)
 target_link_libraries(raytracer sfml-graphics sfml-window sfml-system)
 
-
 target_include_directories(raytracer PUBLIC src/shared)
 target_include_directories(raytracer PUBLIC src/main)
 
@@ -34,6 +33,7 @@ add_subdirectory(src/primitives/plane)
 add_subdirectory(src/primitives/cylinder)
 add_subdirectory(src/primitives/cone)
 add_subdirectory(src/materials/flat_color)
+add_subdirectory(src/materials/mirror)
 add_subdirectory(src/lights/directional_light)
 add_subdirectory(src/lights/ambient_light)
 add_subdirectory(src/lights/point_light)

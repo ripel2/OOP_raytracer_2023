@@ -13,7 +13,10 @@
 namespace RayTracer {
     class Scatter {
         public:
-            Ray ray;
+            Ray reflected;
             Color attenuation;
+            Color specularReflection;
+            double reflectionIndex;
+            double transmissionIndex;
     };
 }
