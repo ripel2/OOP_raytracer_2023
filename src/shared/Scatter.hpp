@@ -15,6 +15,7 @@ namespace RayTracer {
         public:
             Ray reflected;
             Color attenuation;
+            Color specularReflection;
             double reflectionIndex;
             double transmissionIndex;
     };

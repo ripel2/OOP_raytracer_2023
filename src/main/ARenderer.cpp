@@ -104,10 +104,13 @@ RayTracer::Color RayTracer::ARenderer::getColor(const RayTracer::Ray &ray, const
                 Math::Point<3> reflectedOrigin = scatter.reflected.getOrigin() + scatter.reflected.getDirection() * 0.001;
                 reflectedOrigin += randomInUnitSphere() * 0.1;
                 RayTracer::Ray reflectedRay(reflectedOrigin, scatter.reflected.getDirection());
-                reflectedColor += getColor(scatter.reflected, scene, depth - 1, closest);
+                reflectedColor += getColor(scatter.reflected, scene, depth - 1, closest) * scatter.reflectionIndex;
             }
             reflectedColor /= 3;
-            pixel = material->getPointColor(ray, rayHit) * scatter.transmissionIndex + reflectedColor * scatter.reflectionIndex;
+            reflectedColor.clamp();
+            pixel = material->getPointColor(ray, rayHit) * scatter.attenuation * (1 - scatter.reflectionIndex);
+            pixel += reflectedColor * scatter.reflectionIndex * scatter.attenuation;
+            pixel.clamp();
         } else {
             pixel = material->getPointColor(ray, rayHit);
         }
