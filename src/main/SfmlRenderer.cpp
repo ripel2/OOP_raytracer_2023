@@ -16,6 +16,7 @@ RayTracer::SfmlRenderer::SfmlRenderer(size_t width, size_t height, RayTracer::Pa
     this->_sprite.setTexture(_texture);
     this->_view = this->_window.getDefaultView();
     this->_isOpen = true;
+    this->_window.setView(_view);
 }
 
 static bool isFileExisting(const std::string &filename)
