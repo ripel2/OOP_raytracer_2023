@@ -1,5 +1,4 @@
-# <span style="color:lightblue">RAYTRACER</span>
-
+# <span style="color:lightblue">RAYTRACER
 
 Project carried out by :
 
@@ -7,8 +6,6 @@ Project carried out by :
 - [**Axel IDOUX**](https://github.com/FoxaxeWasTaken) <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">
 - [**Thibault GUYONY**](https://github.com/ThibaultGuyony) <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">
 - [**Bastien GERARD**](https://github.com/BastienGeRard) <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">
-
-<hr>
 
 ## Project
 
@@ -33,7 +30,8 @@ To generate an image, the program traces rays from the camera's eye and follows 
 <hr>
 
 ### # Here is an example of a scene :
-<img src="docs/colored_lights.png" alt="Example" width="960" height="540">
+
+<img src="docs/colored_lights.png" alt="Example">
 
 <hr>
 
@@ -48,7 +46,9 @@ To create a 3D scene, lights, materials, and primitives are loaded as dynamic li
 ### # Mandatory features
 
 ### # MUST
+
 Your raytracer must support the following features:
+
 - Primitives:
   - Sphere
   - Plane
@@ -67,7 +67,9 @@ Your raytracer must support the following features:
   - No GUI, output to a PPM file
 
 ### # SHOULD
+
 Once the previous features are working properly, you should add the following ones:
+
 - Primitives:
   - Cylinder
   - Cone
@@ -77,7 +79,9 @@ Once the previous features are working properly, you should add the following on
   - Drop shadows
 
 ### # COULD
+
 Now that you’ve implemented the very basics of your raytracer, implement freely the following features:
+
 - Primitives:
   - Limited cylinder
   - Limited cone
@@ -123,6 +127,7 @@ Now that you’ve implemented the very basics of your raytracer, implement freel
 <hr>
 
 ## How to use it
+
 ```
 ∼/Raytracer> mkdir ./build/ && cd ./build/
 ∼/Raytracer> cmake .. -G “Unix Makefiles” -DCMAKE_BUILD_TYPE=Release
@@ -134,20 +139,30 @@ Now that you’ve implemented the very basics of your raytracer, implement freel
 
 ```
 
-<br>
+### # Keys for the SFMLRenderer
+
+<div style="width: 650px">
+- Escape = Exit
+<br>- P or MouseWheelUp = ZoomIn
+<br>- L or MouseWheelDown = ZoomOut
+<br>- KeyUp = Move view up
+<br>- KeyDown = Move view down
+<br>- KeyLeft = Move view to the left
+<br>- KeyRight = Move view to the right
+<br>- R = Reset view
+<br>- S = Screenshot
+</div>
 
 ### # Complete the Raytracer
+
 <div style="width: 650px;">
 You can create your own rendering scenes or implement your own primitives, lights and materials. To do this you can refer to the pdf files in the <span style="color:green">./docs</span> folder
 </div>
-
-<hr>
 
 ### # Conclusion
 
 <div style="width: 650px;">
 In the end, the team was able to create a raytracing engine capable of generating realistic 3D images. The project allowed team members to develop their skills in C++ programming, teamwork, and project management within a limited timeframe.
 </div>
-
 
 <hr>
