@@ -64,5 +64,9 @@ int main(int ac, char **av)
         print_help();
         return 84;
     }
+    if (std::string(av[1]) == "-h" || std::string(av[1]) == "--help") {
+        print_help();
+        return 0;
+    }
     return start_raytracer(av);
 }
