@@ -1,13 +1,11 @@
-# `<span style="color:lightblue">`RAYTRACER
+# <span style="color:lightblue">RAYTRACER
 
 Project carried out by :
 
-- [**Lucas HAUSZLER**](https://github.com/ripel2) `<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">`
-- [**Axel IDOUX**](https://github.com/FoxaxeWasTaken) `<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">`
-- [**Thibault GUYONY**](https://github.com/ThibaultGuyony) `<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">`
-- [**Bastien GERARD**](https://github.com/BastienGeRard) `<img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">`
-
-<hr>
+- [**Lucas HAUSZLER**](https://github.com/ripel2) <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">
+- [**Axel IDOUX**](https://github.com/FoxaxeWasTaken) <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">
+- [**Thibault GUYONY**](https://github.com/ThibaultGuyony) <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">
+- [**Bastien GERARD**](https://github.com/BastienGeRard) <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="icone-github" width="10" height="10">
 
 ## Project
 
@@ -143,23 +141,23 @@ Now that you’ve implemented the very basics of your raytracer, implement freel
 
 ### # Keys for the SFMLRenderer
 
-* Escape = Exit
-* P or MouseWheelUp = ZoomIn
-* L or MouseWheelDown = ZoomOut
-* KeyUp = Move view up
-* KeyDown = Move view down
-* KeyLeft = Move view to the left
-* KeyRight = Move view to the right
-* R = Reset view
-* S = Screenshot
+<div style="width: 650px">
+- Escape = Exit
+- P or MouseWheelUp = ZoomIn
+- L or MouseWheelDown = ZoomOut
+- KeyUp = Move view up
+- KeyDown = Move view down
+- KeyLeft = Move view to the left
+- KeyRight = Move view to the right
+- R = Reset view
+- S = Screenshot
+</div>
 
 ### # Complete the Raytracer
 
 <div style="width: 650px;">
 You can create your own rendering scenes or implement your own primitives, lights and materials. To do this you can refer to the pdf files in the <span style="color:green">./docs</span> folder
 </div>
-
-<hr>
 
 ### # Conclusion
 
