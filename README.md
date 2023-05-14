@@ -143,14 +143,14 @@ Now that you’ve implemented the very basics of your raytracer, implement freel
 
 <div style="width: 650px">
 - Escape = Exit
-- P or MouseWheelUp = ZoomIn
-- L or MouseWheelDown = ZoomOut
-- KeyUp = Move view up
-- KeyDown = Move view down
-- KeyLeft = Move view to the left
-- KeyRight = Move view to the right
-- R = Reset view
-- S = Screenshot
+<br>- P or MouseWheelUp = ZoomIn
+<br>- L or MouseWheelDown = ZoomOut
+<br>- KeyUp = Move view up
+<br>- KeyDown = Move view down
+<br>- KeyLeft = Move view to the left
+<br>- KeyRight = Move view to the right
+<br>- R = Reset view
+<br>- S = Screenshot
 </div>
 
 ### # Complete the Raytracer
