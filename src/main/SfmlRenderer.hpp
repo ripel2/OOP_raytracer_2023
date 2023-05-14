@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 
 #include "ARenderer.hpp"
+#include "Parser.hpp"
 
 namespace RayTracer {
     class Parser;

@@ -17,7 +17,6 @@
 #include "Errors.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
-#include "ARenderer.hpp"
 #include "PPMRenderer.hpp"
 #include "SfmlRenderer.hpp"
 
@@ -32,56 +31,55 @@ namespace RayTracer {
             std::unique_ptr<Scene> _scene;
             std::unique_ptr<IRenderer> _renderer;
             std::map<std::string, std::shared_ptr<IMaterial>> _materials;
-            std::string _fileParsed;
-            std::string _fileLastModificationDate;
-            bool _isFileParsedChanged;
+            std::string _filePath;
+            struct stat _latestFileStat;
 
             /**
              * @brief Parse the camera section
              * @param root The config root
-            */
+             */
             void _parseCamera(const libconfig::Setting &root);
 
             /**
              * @brief Parse the renderer section
              * @param root The config root
-            */
+             */
             void _parseRenderer(const libconfig::Setting &root);
 
             /**
              * @brief Parse the materials section
              * @param root The config root
-            */
+             */
             void _parseMaterials(const libconfig::Setting &root);
 
             /**
              * @brief Parse a material
              * @param setting The material setting
-            */
+             */
             void _parseMaterial(const libconfig::Setting &setting);
 
             /**
              * @brief Parse the lights section
              * @param root The config root
-            */
+             */
             void _parseLights(const libconfig::Setting &root);
 
             /**
              * @brief Parse a light
              * @param setting The light setting
-            */
+             */
             void _parseLight(const libconfig::Setting &setting);
 
             /**
              * @brief Parse the objects section
              * @param root The config root
-            */
+             */
             void _parseObjects(const libconfig::Setting &root);
 
             /**
              * @brief Parse a object
              * @param setting The object setting
-            */
+             */
             void _parseObject(const libconfig::Setting &setting);
 
             /**
@@ -89,7 +87,7 @@ namespace RayTracer {
              * @param setting The setting to get the value from
              * @return The value as a double
              * @note libconfig sucks
-            */
+             */
             double _getDouble(const libconfig::Setting &setting) const;
 
             /**
@@ -97,19 +95,15 @@ namespace RayTracer {
              * @param setting The setting to get the value from
              * @return The value as a int
              * @note libconfig sucks
-            */
+             */
             int _getInt(const libconfig::Setting &setting) const;
 
             /**
-             * @brief Get the date of the last modification of a file
-             * @return The date of the last modification of a file
-            */
-           std::string _getFileLastModificationDate();
-
-            /**
-             * @brief Check if file parsed has changed
+             * @brief Gets the stat of a file
+             * @param path The path to the file
+             * @return The stat of the file
              */
-            void _checkFileParsedChanged();
+            struct stat _getFileStat(const std::string &path) const;
 
         public:
             /**
@@ -126,8 +120,9 @@ namespace RayTracer {
             /**
              * @brief Parse a file
              * @param path The path to the file to parse
+             * @param isStartup If the file is parsed at startup
              */
-            void parse(const std::string &path);
+            void parse(const std::string &path, bool isStartup = true);
 
             /**
              * @brief Get the image width
@@ -162,7 +157,19 @@ namespace RayTracer {
             /**
              * @brief Get the max depth of the rays being casted recursively
              * @return The max depth
-            */
+             */
             std::size_t getMaxDepth() const;
+
+            /**
+             * @brief Check if file parsed has changed
+             * @return true if file has changed, false otherwise
+             */
+            bool isFileChanged();
+
+            /**
+             * @brief Get the file path
+             * @return The file path
+             */
+            std::string getFilePath() const;
     };
 }

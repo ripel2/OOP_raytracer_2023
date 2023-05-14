@@ -5,11 +5,10 @@
 ** Parser
 */
 
-#include "Parser.hpp"
-
 #include "MaterialBuilder.hpp"
 #include "LightBuilder.hpp"
 #include "ObjectBuilder.hpp"
+#include "Parser.hpp"
 
 RayTracer::Parser::Parser(RayTracer::PluginLoader *loader)
     : _loader(loader), _imageWidth(0), _imageHeight(0), _samplesPerPixel(1), _maxDepth(0), _scene(nullptr), _renderer(nullptr), _materials()
@@ -24,7 +23,7 @@ RayTracer::Parser::~Parser()
         _renderer.reset();
 }
 
-void RayTracer::Parser::parse(const std::string &path)
+void RayTracer::Parser::parse(const std::string &path, bool isStartup)
 {
     libconfig::Config cfg;
     libconfig::Setting *root;
@@ -41,15 +40,15 @@ void RayTracer::Parser::parse(const std::string &path)
     }
     try {
         _scene = std::make_unique<RayTracer::Scene>();
-
         _parseCamera(*root);
-        _parseRenderer(*root);
+        if (isStartup) {
+            _parseRenderer(*root);
+        }
         _parseMaterials(*root);
         _parseLights(*root);
         _parseObjects(*root);
-        _isFileParsedChanged = false;
-        _fileParsed = path;
-        _fileLastModificationDate = _getFileLastModificationDate();
+        _latestFileStat = _getFileStat(path);
+        _filePath = path;
     } catch (const RayTracer::ParserError &e) {
         throw e;
     } catch (const libconfig::SettingNotFoundException &nfex) {
@@ -99,23 +98,6 @@ int RayTracer::Parser::_getInt(const libconfig::Setting &setting) const
         return static_cast<int>(value);
     }
     return setting;
-}
-
-std::string RayTracer::Parser::_getFileLastModificationDate()
-{
-    struct stat result;
-    int ret = stat(_fileParsed.c_str(), &result);
-
-    if (ret == -1)
-        throw RayTracer::ParserError("Cannot get file last modification date");
-    return std::to_string(result.st_mtime);
-}
-
-void RayTracer::Parser::_checkFileParsedChanged()
-{
-    if (_fileLastModificationDate != _getFileLastModificationDate()) {
-        this->parse(_fileParsed);
-    }
 }
 
 void RayTracer::Parser::_parseCamera(const libconfig::Setting &root)
@@ -358,4 +340,27 @@ std::size_t RayTracer::Parser::getSamplesPerPixel() const
 std::size_t RayTracer::Parser::getMaxDepth() const
 {
     return _maxDepth;
+}
+
+struct stat RayTracer::Parser::_getFileStat(const std::string &path) const
+{
+    struct stat buffer;
+    if (stat(path.c_str(), &buffer) != 0)
+        throw RayTracer::ParserError("File " + path + " does not exist");
+    return buffer;
+}
+
+bool RayTracer::Parser::isFileChanged()
+{
+    struct stat buffer = _getFileStat(_filePath);
+
+    if (buffer.st_mtime != _latestFileStat.st_mtime) {
+        return true;
+    }
+    return false;
+}
+
+std::string RayTracer::Parser::getFilePath() const
+{
+    return _filePath;
 }
